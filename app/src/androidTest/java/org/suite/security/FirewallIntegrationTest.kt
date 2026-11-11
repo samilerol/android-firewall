@@ -22,19 +22,19 @@ import java.util.concurrent.TimeUnit
 class FirewallIntegrationTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val context get() = instrumentation.targetContext
-    private var saved = emptySet<String>()
+    private var saved = FirewallRules(emptySet())
     private var phase = "control"
     private val probePackage = "org.suite.firewallprobe"
 
     @Before fun prepare() {
-        saved = Rules.blocked(context)
+        saved = Rules.load(context)
         shell("appops set ${context.packageName} ACTIVATE_VPN allow")
         assertNull("VPN authorization could not be prepared", VpnService.prepare(context))
         stop()
     }
     @After fun restore() {
         try { probe("tcp-close", 18080) } finally { stop() }
-        Rules.save(context, saved)
+        Rules.save(context, saved.packages, saved.mode)
     }
     private fun shell(command: String) {
         ParcelFileDescriptor.AutoCloseInputStream(instrumentation.uiAutomation.executeShellCommand(command)).use { it.readBytes() }
@@ -106,6 +106,10 @@ class FirewallIntegrationTest {
         phase = "control"
         // Switch the VPN to another installed UID. The probe should again reach endpoints.
         Rules.save(context, setOf("com.android.settings"))
+        assertEquals("Saving alone replaced active rules", setOf(probePackage), FirewallStatus.state.value.appliedPackages)
+        phase = "blocked"
+        assertEquals("Saved but unapplied rules allowed traffic", 0, probe("tcp", 18080).first)
+        phase = "control"
         context.startForegroundService(Intent(context, FirewallService::class.java))
         await("Replacement rules did not become ready", 60000) {
             val state = FirewallStatus.state.value
@@ -132,6 +136,51 @@ class FirewallIntegrationTest {
             phase = "control"
             stop()
         }
+    }
+    @Test fun intentionalAllAppModeAndSelectiveRecovery() {
+        val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")
+        for (host in hosts) assertEquals("Baseline required", 1, probe("tcp", 18080, host).first)
+        Rules.save(context, setOf("com.android.settings"), FirewallMode.BLOCK_ALL)
+        context.startForegroundService(Intent(context, FirewallService::class.java))
+        await("All-app mode did not become ready", 60000) { FirewallStatus.state.value.active && FirewallStatus.state.value.appliedMode == FirewallMode.BLOCK_ALL }
+        assertFalse("Explicit mode was labeled as quarantine", FirewallStatus.state.value.quarantine)
+        phase = "blocked"
+        for (host in hosts) for ((kind, port) in listOf("tcp" to 18080, "udp" to 18081)) assertEquals(0, probe(kind, port, host).first)
+        Rules.save(context, setOf("com.android.settings"))
+        context.startForegroundService(Intent(context, FirewallService::class.java))
+        await("Selective mode did not return", 60000) { FirewallStatus.state.value.active && FirewallStatus.state.value.appliedMode == FirewallMode.SELECTED_APPS }
+        phase = "control"
+        for (host in hosts) assertRecovery(host)
+    }
+    @Test fun statusRequestDoesNotStartProtection() {
+        context.startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STATUS))
+        SystemClock.sleep(1000)
+        assertFalse(FirewallStatus.state.value.running)
+        assertFalse(FirewallStatus.state.value.active)
+        start(setOf(probePackage))
+        assertTrue(FirewallStatus.state.value.running)
+    }
+    @Test fun removedAndReinstalledSelectionIsAutomaticallyReapplied() {
+        assertEquals("Baseline required", 1, probe("tcp", 18080).first)
+        start(setOf(probePackage))
+        try {
+            shell("pm uninstall $probePackage")
+            await("Removed selection did not enter quarantine", 60000) {
+                FirewallStatus.state.value.active && FirewallStatus.state.value.quarantine
+            }
+        } finally {
+            // The host script pushes exactly this disposable fixture before execution.
+            shell("pm install -r /data/local/tmp/firewall-probe.apk")
+        }
+        await("Reinstalled package rules did not recover", 60000) {
+            val state = FirewallStatus.state.value
+            state.active && !state.quarantine && state.appliedPackages == setOf(probePackage)
+        }
+        phase = "blocked"
+        assertEquals("Reinstalled UID escaped saved rule", 0, probe("tcp", 18080).first)
+        stop()
+        phase = "control"
+        assertRecovery()
     }
     @Test fun existingTcpConnectionsCannotContinueAfterVpnReady() {
         val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")

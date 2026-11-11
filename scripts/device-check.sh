@@ -25,6 +25,7 @@ artifacts=$(cd "$artifacts" && pwd)
 "$adb" -s "$serial" install -r app/build/outputs/apk/debug/app-debug.apk
 "$adb" -s "$serial" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 "$adb" -s "$serial" install -r probe/build/outputs/apk/androidTest/debug/probe-debug-androidTest.apk
+"$adb" -s "$serial" push probe/build/outputs/apk/debug/probe-debug.apk /data/local/tmp/firewall-probe.apk
 server_args=()
 instrumentation_args=()
 if [[ "${FIREWALL_IPV6:-0}" == 1 ]]; then
@@ -48,10 +49,10 @@ else:
     raise SystemExit("Endpoint failed to start")
 PY
 "$adb" -s "$serial" shell getprop > "$artifacts/device-properties.txt"
-"$adb" -s "$serial" shell am instrument -w -r "${instrumentation_args[@]}" \
-  -e class org.suite.security.DeviceSmokeTest,org.suite.security.FirewallIntegrationTest \
+timeout 900s "$adb" -s "$serial" shell am instrument -w -r "${instrumentation_args[@]}" \
+  -e class org.suite.security.DeviceSmokeTest,org.suite.security.FirewallIntegrationTest,org.suite.security.MvpFlowTest \
   org.suite.security.test/androidx.test.runner.AndroidJUnitRunner | tee "$artifacts/instrumentation.txt"
-"$adb" -s "$serial" shell am instrument -w -r -e expected allowed \
+timeout 180s "$adb" -s "$serial" shell am instrument -w -r -e expected allowed \
   org.suite.firewallprobe.test/androidx.test.runner.AndroidJUnitRunner | tee "$artifacts/independent-control.txt"
 python3 - "$artifacts" <<'PY'
 import json, re, sys, os
@@ -59,7 +60,7 @@ from pathlib import Path
 root = Path(sys.argv[1])
 result = (root / "instrumentation.txt").read_text()
 match = re.search(r"OK \((\d+) tests?\)", result)
-assert match and int(match[1]) >= 8, "Android test run failed or incomplete"
+assert match and int(match[1]) >= 14, "Android test run failed or incomplete"
 assert not re.search(r"FAILURES|INSTRUMENTATION_FAILED|shortMsg=", result), "Instrumentation failure"
 independent = (root / "independent-control.txt").read_text()
 assert re.search(r"OK \(1 test\)", independent) and "FAILURES" not in independent, "Independent baseline failed"
