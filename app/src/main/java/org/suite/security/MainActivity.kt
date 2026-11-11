@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
+import android.os.CancellationSignal
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,8 +13,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
@@ -25,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.Role
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -33,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -43,6 +48,8 @@ class SuiteModel : ViewModel() {
     var root by mutableStateOf<List<String>?>(null)
     var report by mutableStateOf("Choose an APK document for local metadata analysis. Maximum 100 MiB; no upload, installation, or execution.")
     var analyzing by mutableStateOf(false)
+    var cancelling by mutableStateOf(false)
+    private var analysisSignal: CancellationSignal? = null
     fun refresh(context: android.content.Context) {
         if (loading) return
         loading = true
@@ -56,12 +63,18 @@ class SuiteModel : ViewModel() {
     fun analyze(context: android.content.Context, uri: android.net.Uri) {
         if (analyzing) return
         analyzing = true
+        cancelling = false
+        val signal = CancellationSignal()
+        analysisSignal = signal
         viewModelScope.launch {
-            report = runCatching { withContext(Dispatchers.IO) { ApkAnalyzer.analyze(context, uri) } }
-                .getOrElse { "Analysis failed: ${it.message}" }
-            analyzing = false
+            try { report = withContext(Dispatchers.IO) { ApkAnalyzer.analyze(context, uri, signal) } }
+            catch (e: CancellationException) { throw e }
+            catch (e: Exception) { report = if (signal.isCanceled) "Analysis cancelled." else "Analysis failed: ${e.message}" }
+            finally { analysisSignal = null; analyzing = false; cancelling = false }
         }
     }
+    fun cancelAnalysis() { analysisSignal?.let { cancelling = true; it.cancel() } }
+    override fun onCleared() { analysisSignal?.cancel(); super.onCleared() }
 }
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +97,8 @@ class MainActivity : ComponentActivity() {
         var confirmation by remember { mutableStateOf<String?>(null) }
         val scope = rememberCoroutineScope()
         var tab by rememberSaveable { mutableIntStateOf(0) }
+        val listState = rememberLazyListState()
+        fun showTab(index: Int) { tab = index; scope.launch { listState.scrollToItem(0) } }
         var query by rememberSaveable { mutableStateOf("") }
         var expanded by remember { mutableStateOf<String?>(null) }
         var showSystem by rememberSaveable { mutableStateOf(false) }
@@ -111,7 +126,10 @@ class MainActivity : ComponentActivity() {
                     savedRules = next
                     if (stop) stopFirewall() else {
                         val intent = VpnService.prepare(this@MainActivity)
-                        if (intent != null) vpnConsent.launch(intent) else startFirewall()
+                        if (intent != null) {
+                            if (intent.resolveActivity(packageManager) == null) consentMessage = "Cannot open VPN authorization. Enable Android VPN dialogs and retry."
+                            else vpnConsent.launch(intent)
+                        } else startFirewall()
                     }
                 } catch (e: Exception) { consentMessage = e.message ?: "Cannot apply rules; previous protection remains." }
                 finally { saving = false }
@@ -148,10 +166,10 @@ class MainActivity : ComponentActivity() {
         Scaffold(topBar = { TopAppBar(title = { Column { Text("Android Firewall"); Text("LOCAL • PRIVATE • OPEN SOURCE", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary) } }) },
             bottomBar = { NavigationBar {
                 listOf("Overview", "Apps", "Activity", "APK").forEachIndexed { index, name ->
-                    NavigationBarItem(selected = tab == index, onClick = { tab = index }, icon = { Text(listOf("◈", "▦", "↔", "◇")[index]) }, label = { Text(name) })
+                    NavigationBarItem(selected = tab == index, onClick = { showTab(index) }, icon = { Text(listOf("◈", "▦", "↔", "◇")[index]) }, label = { Text(name) })
                 }
             } }) { padding ->
-            LazyColumn(Modifier.fillMaxSize().padding(padding), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            LazyColumn(Modifier.fillMaxSize().padding(padding), state = listState, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                 if (model.error != null) item { Text(model.error!!, color = MaterialTheme.colorScheme.error) }
                 when (tab) {
                     0 -> {
@@ -168,8 +186,14 @@ class MainActivity : ComponentActivity() {
                                 Button(enabled = !saving && (status.running || mode == FirewallMode.BLOCK_ALL || blocked.isNotEmpty()), onClick = {
                                     if (status.running) stopFirewall() else requestApply()
                                 }) { Text(if (status.running) "Stop firewall" else "Start blocking") }
-                                TextButton(onClick = { tab = 1 }) { Text("Select apps") }
+                                TextButton(onClick = { showTab(1) }) { Text("Select apps") }
                             }
+                            if (pending) Text("Unapplied changes. Open Apps and apply to update protection.", color = MaterialTheme.colorScheme.secondary)
+                            if (status.running && (!status.monitoring || !status.active || status.retryRequired)) {
+                                TextButton(enabled = !saving, onClick = { requestApply() }) { Text("Retry protection") }
+                            }
+                            if (blocked.isEmpty() && mode == FirewallMode.SELECTED_APPS && !status.running) Text("Choose apps first, or explicitly select Block all apps in the Apps tab.")
+                            consentMessage?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                             Text("Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time.")
                             Text(when (status.lockdown) {
                                 true -> "Last service check: Android Lockdown was ON: this sink-only VPN also prevents unselected apps from connecting."
@@ -179,12 +203,6 @@ class MainActivity : ComponentActivity() {
                             Text("For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app.")
                             TextButton(onClick = { runCatching { startActivity(Intent(Settings.ACTION_VPN_SETTINGS)) }
                                 .onFailure { consentMessage = "Open Android Settings → Network → VPN manually." } }) { Text("Open Android VPN settings") }
-                            if (pending) Text("Unapplied changes. Open Apps and apply to update protection.", color = MaterialTheme.colorScheme.secondary)
-                            if (status.running && (!status.monitoring || !status.active || status.retryRequired)) {
-                                TextButton(enabled = !saving, onClick = { requestApply() }) { Text("Retry protection") }
-                            }
-                            if (blocked.isEmpty() && mode == FirewallMode.SELECTED_APPS && !status.running) Text("Choose apps first, or explicitly select Block all apps in the Apps tab.")
-                            consentMessage?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                             Text("No forwarding or anonymity service. Empty or missing app rules enter safety mode and block ALL apps. Lockdown with this sink-only design also blocks unselected apps.", style = MaterialTheme.typography.bodySmall)
                         } }
                         item { Panel("Application overview") {
@@ -229,10 +247,19 @@ class MainActivity : ComponentActivity() {
                             } }
                         }
                         item { OutlinedTextField(value = query, onValueChange = { query = it }, label = { Text("Search name or package") }, modifier = Modifier.fillMaxWidth(), singleLine = true) }
-                        item { Row { Checkbox(checked = showSystem, onCheckedChange = { showSystem = it }); Text("Show system apps", modifier = Modifier.padding(top = 12.dp)); TextButton(onClick = { model.refresh(context) }) { Text("Refresh") } } }
-                        item { Row { Checkbox(checked = internetOnly, onCheckedChange = { internetOnly = it }); Text("Internet apps only", modifier = Modifier.padding(top = 12.dp)) } }
+                        item { Row(Modifier.fillMaxWidth()) {
+                            Row(Modifier.weight(1f).toggleable(value = showSystem, role = Role.Checkbox, onValueChange = { showSystem = it })) {
+                                Checkbox(checked = showSystem, onCheckedChange = null)
+                                Text("Show system apps", modifier = Modifier.padding(top = 12.dp))
+                            }
+                            TextButton(onClick = { model.refresh(context) }) { Text("Refresh") }
+                        } }
+                        item { Row(Modifier.fillMaxWidth().toggleable(value = internetOnly, role = Role.Checkbox, onValueChange = { internetOnly = it })) {
+                            Checkbox(checked = internetOnly, onCheckedChange = null)
+                            Text("Internet apps only", modifier = Modifier.padding(top = 12.dp))
+                        } }
                         if (model.loading) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
-                        val selectedUids = model.apps.filter { it.packageName in blocked }.map { it.uid }.toSet()
+                        val selectedUids = model.apps.filter { it.packageName in blocked && it.uid >= 0 }.map { it.uid }.toSet()
                         val visible = model.apps.filter { it.packageName != packageName && (showSystem || !it.system) && (!internetOnly || Manifest.permission.INTERNET in it.permissions) && (it.label.contains(query, true) || it.packageName.contains(query, true)) }
                         if (!model.loading && visible.isEmpty()) item { Text("No matching applications. Adjust your search or app filters.") }
                         items(visible, key = { it.packageName }) { app ->
@@ -267,8 +294,9 @@ class MainActivity : ComponentActivity() {
                     }
                     3 -> {
                         item { Text("APK inspection", style = MaterialTheme.typography.headlineSmall) }
-                        item { Button(enabled = !model.analyzing, onClick = { picker.launch(arrayOf("application/vnd.android.package-archive", "application/octet-stream", "application/zip")) }) { Text(if (model.analyzing) "Analyzing locally…" else "Choose APK") } }
+                        item { Button(enabled = !model.analyzing, onClick = { runCatching { picker.launch(arrayOf("application/vnd.android.package-archive", "application/octet-stream", "application/zip")) }.onFailure { model.report = "Cannot open document picker. Enable a document provider and retry." } }) { Text(if (model.analyzing) "Analyzing locally…" else "Choose APK") } }
                         if (model.analyzing) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+                        if (model.analyzing) item { TextButton(enabled = !model.cancelling, onClick = { model.cancelAnalysis() }) { Text(if (model.cancelling) "Cancelling…" else "Cancel analysis") } }
                         item { Panel("Static metadata report") { SelectionContainer { Text(model.report) } } }
                     }
                 }
