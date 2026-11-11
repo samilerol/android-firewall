@@ -1,0 +1,128 @@
+NetworkProviders for: TelephonyNetworkFactory[0] UntrustedWifiNetworkFactory WifiNetworkFactory PhoneSwitcherNetworkRequstListener
+
+Active default network: 101
+
+Current Networks:
+  NetworkAgentInfo{ ni{[type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: , failover: false, available: true, roaming: false]}  network{101}  nethandle{437197393933}  lp{{InterfaceName: wlan0 LinkAddresses: [ fe80::68fb:e511:b70f:73d7/64,fec0::abdc:9bba:f965:f0d4/64,fec0::2d45:a9e6:f699:39ee/64,10.0.2.16/24 ] DnsAddresses: [ /10.0.2.3 ] Domains: null MTU: 0 ServerAddress: /10.0.2.2 TcpBufferSizes: 524288,1048576,2097152,262144,524288,1048576 Routes: [ fe80::/64 -> :: wlan0 mtu 0,::/0 -> fe80::2 wlan0 mtu 0,fec0::/64 -> :: wlan0 mtu 0,10.0.2.0/24 -> 0.0.0.0 wlan0 mtu 0,0.0.0.0/0 -> 10.0.2.2 wlan0 mtu 0 ]}}  nc{[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=195937Kbps LinkDnBandwidth>=26812Kbps SignalStrength: -30 OwnerUid: 2000 SSID: "AndroidWifi" RequestorUid: -1 RequestorPackageName: null]}  Score{20}  everValidated{false}  lastValidated{false}  created{true} lingering{false} explicitlySelected{true} acceptUnvalidated{false} everCaptivePortalDetected{false} lastCaptivePortalDetected{false} partialConnectivity{false} acceptPartialConnectivity{false} clat{mBaseIface: null, mIface: null, mState: IDLE} }
+    Requests: REQUEST:2 LISTEN:7 BACKGROUND_REQUEST:0 total:9
+      NetworkRequest [ REQUEST id=1, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ LISTEN id=4, [ Capabilities: FOREGROUND AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ LISTEN id=5, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ LISTEN id=7, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ LISTEN id=10, [ Transports: WIFI Capabilities: NOT_VPN AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+      NetworkRequest [ LISTEN id=14, [ Transports: WIFI Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1073 AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+      NetworkRequest [ REQUEST id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+      NetworkRequest [ LISTEN id=16, [ AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+      NetworkRequest [ LISTEN id=22, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001 AdministratorUids: [] RequestorUid: 1001 RequestorPackageName: com.android.phone] ]
+    Lingered:
+  NetworkAgentInfo{ ni{[type: VPN[], state: CONNECTED/CONNECTED, reason: agentConnect, extra: (none), failover: false, available: true, roaming: false]}  network{215}  nethandle{926823665677}  lp{{InterfaceName: tun0 LinkAddresses: [ 10.111.0.1/32,fd42:4242:6cc1:2b9c:49b8:bdb8:ee6d:d70d/128 ] DnsAddresses: [ /192.0.2.1 ] Domains:  MTU: 1500 Routes: [ 0.0.0.0/0 -> 0.0.0.0 tun0 mtu 0,::/0 -> :: tun0 mtu 0,10.111.0.1/32 -> 0.0.0.0 tun0 mtu 0,fd42:4242:6cc1:2b9c:49b8:bdb8:ee6d:d70d/128 -> :: tun0 mtu 0 ]}}  nc{[ Transports: WIFI|VPN Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=195937Kbps LinkDnBandwidth>=26812Kbps Uids: <{0-99999}> OwnerUid: 10131 RequestorUid: -1 RequestorPackageName: null]}  Score{101}  everValidated{true}  lastValidated{true}  created{true} lingering{false} explicitlySelected{false} acceptUnvalidated{false} everCaptivePortalDetected{false} lastCaptivePortalDetected{false} partialConnectivity{false} acceptPartialConnectivity{false} clat{mBaseIface: null, mIface: null, mState: IDLE} }
+    Requests: REQUEST:0 LISTEN:8 BACKGROUND_REQUEST:0 total:8
+      NetworkRequest [ LISTEN id=4, [ Capabilities: FOREGROUND AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ LISTEN id=8, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&VALIDATED Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ TRACK_DEFAULT id=9, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+      NetworkRequest [ TRACK_DEFAULT id=11, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10121 AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+      NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10121 AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+      NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1073 AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+      NetworkRequest [ LISTEN id=16, [ AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+      NetworkRequest [ LISTEN id=178, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+    Lingered:
+
+Restrict background: false
+
+Status for known UIDs:
+  
+Network Requests:
+  uid/pid:1000/534 NetworkRequest [ REQUEST id=1, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ BACKGROUND_REQUEST id=2, [ Transports: CELLULAR Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ LISTEN id=4, [ Capabilities: FOREGROUND AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ LISTEN id=5, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ LISTEN id=6, [ Transports: CELLULAR Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ LISTEN id=7, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ LISTEN id=8, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&VALIDATED Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:1000/534 NetworkRequest [ TRACK_DEFAULT id=9, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: android] ]
+  uid/pid:10121/790 NetworkRequest [ LISTEN id=10, [ Transports: WIFI Capabilities: NOT_VPN AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+  uid/pid:10121/790 NetworkRequest [ TRACK_DEFAULT id=11, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10121 AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+  uid/pid:10121/790 NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10121 AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+  uid/pid:1073/1070 NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1073 AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+  uid/pid:1073/1070 NetworkRequest [ LISTEN id=14, [ Transports: WIFI Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1073 AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+  uid/pid:1073/1070 NetworkRequest [ REQUEST id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN AdministratorUids: [] RequestorUid: 1073 RequestorPackageName: com.android.networkstack] ]
+  uid/pid:10121/790 NetworkRequest [ LISTEN id=16, [ AdministratorUids: [] RequestorUid: 10121 RequestorPackageName: com.android.systemui] ]
+  uid/pid:1001/3729 NetworkRequest [ LISTEN id=22, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001 AdministratorUids: [] RequestorUid: 1001 RequestorPackageName: com.android.phone] ]
+  uid/pid:10131/7807 NetworkRequest [ LISTEN id=178, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+
+mLegacyTypeTracker:
+  Supported types: 0 1 2 3 4 5 10 11 12 13 14 15 17
+  Current state:
+    1 [101 WIFI]
+    17 [215 WIFI|VPN]
+
+
+Supported Socket keepalives: [1, 3, 0, 0, 0, 0, 0, 0]
+Reserved Privileged keepalives: 2
+Allowed Unprivileged keepalives per uid: 2
+Socket keepalives:
+
+Bad Wi-Fi avoidance: unrestricted
+
+MultipathPolicyTracker:
+
+mNetworkRequestInfoLogs (most recent first):
+  2026-11-11T13:29:04.349 - REGISTER uid/pid:10131/7807 NetworkRequest [ LISTEN id=178, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T13:28:55.292 - RELEASE uid/pid:10131/7648 NetworkRequest [ LISTEN id=177, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T13:28:02.874 - REGISTER uid/pid:10131/7648 NetworkRequest [ LISTEN id=177, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:52:12.536 - RELEASE uid/pid:10131/6876 NetworkRequest [ LISTEN id=176, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:23:35.042 - REGISTER uid/pid:10131/6876 NetworkRequest [ LISTEN id=176, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:21:03.482 - RELEASE uid/pid:1000/5054 NetworkRequest [ LISTEN id=53, [ Uid: 1000 AdministratorUids: [] RequestorUid: 1000 RequestorPackageName: com.android.settings] ]
+  2026-11-11T12:13:11.802 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=175, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:11.662 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=175, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:10.911 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=174, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:06.626 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=174, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:05.861 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=173, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:05.826 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=173, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:04.843 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=172, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:04.815 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=172, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:04.117 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=171, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:04.080 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=171, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:02.241 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=170, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:02.220 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=170, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:02.178 - RELEASE uid/pid:10131/6370 NetworkRequest [ LISTEN id=169, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+  2026-11-11T12:13:00.206 - REGISTER uid/pid:10131/6370 NetworkRequest [ LISTEN id=169, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]
+
+mNetworkInfoBlockingLogs (most recent first):
+  2026-11-11T13:29:07.290 - UNBLOCKED 1000
+  2026-11-11T13:28:56.508 - BLOCKED 1000
+  2026-11-11T13:28:05.705 - UNBLOCKED 1000
+  2026-11-11T13:08:37.012 - BLOCKED 1000
+  2026-11-11T12:52:25.747 - UNBLOCKED 1000
+  2026-11-11T12:52:13.841 - BLOCKED 1000
+
+NetTransition WakeLock activity (most recent first):
+  total acquisitions: 0
+  total releases: 0
+  cumulative duration: 0s
+  longest duration: 0s
+  
+  bandwidth update requests (by uid):
+
+NetworkStackClient logs:
+  2026-11-11T11:00:03.025 - Network stack init
+  2026-11-11T11:00:48.192 - Network stack service start requested
+  2026-11-11T11:01:20.742 - Network stack service connected
+  2026-11-11T11:01:20.964 - Network stack service registered
+  2026-11-11T11:00:02.991 - Network stack init
+  2026-11-11T11:00:45.408 - Starting networking module android.net.INetworkStackConnector
+  2026-11-11T11:00:47.914 - Starting networking module in network_stack process
+  2026-11-11T11:00:48.192 - Networking module service start requested
+  2026-11-11T11:00:48.236 - Starting networking module android.net.ITetheringConnector
+  2026-11-11T11:00:48.238 - Starting networking module in network_stack process
+  2026-11-11T11:00:48.293 - Networking module service start requested
+  2026-11-11T11:01:20.741 - Networking module service connected
+  2026-11-11T11:01:22.165 - Networking module service connected
+  
+  pendingNetStackRequests length: 0
+
+Permission Monitor:
+  Interface filtering rules:
+    Interface: tun0
+    UIDs: [0-99999]
+    

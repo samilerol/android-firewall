@@ -1,3 +1,5 @@
+> Historical Mission 2 evidence at `18a7f30`. Current behavior changed; see [SECURITY_REVIEW.md](SECURITY_REVIEW.md) and [TESTING.md](TESTING.md).
+
 # Mission 2: firewall validation
 
 Base: `d101a4a563bcaa9e2695a110f4fa33138d618808`.

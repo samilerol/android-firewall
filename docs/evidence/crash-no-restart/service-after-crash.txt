@@ -1,0 +1,17 @@
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{3ba1707 u0 org.suite.security/.FirewallService}
+    intent={act=android.net.VpnService pkg=org.suite.security}
+    packageName=org.suite.security
+    processName=org.suite.security
+    permission=android.permission.BIND_VPN_SERVICE
+    baseDir=/data/app/~~fqaKxY-ST82MF4HPDwhaTg==/org.suite.security-a8wKLA-7tFOr7q24zmK9Vw==/base.apk
+    dataDir=/data/user/0/org.suite.security
+    app=null
+    allowWhileInUsePermissionInFgs=true
+    recentCallingPackage=android
+    isForeground=true foregroundId=1 foregroundNoti=Notification(channel=firewall shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0x00000000 actions=1 vis=PRIVATE)
+    createTime=-56m34s797ms startingBgTimeout=--
+    lastActivity=-27m37s703ms restartTime=-- createdFromFg=false
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=2
+    restartCount=0 restartDelay=-- nextRestartTime=-27m47s770ms crashCount=0

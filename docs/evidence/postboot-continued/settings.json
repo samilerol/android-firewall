@@ -1,0 +1,5 @@
+{
+  "always_on_vpn_app": "org.suite.security",
+  "always_on_vpn_lockdown": "1",
+  "boot_completed": "1"
+}

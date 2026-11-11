@@ -10,3 +10,5 @@ Research references only; no code copied:
 - https://github.com/ukanth/afwall — GPL-3.0; root-dependent firewall contrast.
 
 No tracker databases, third-party signatures, native forwarding engines, logos, or project assets are included.
+
+The `probe` APK and Python server are separate local test fixtures, not runtime dependencies. Their certificate/private key are public test data and are not shipped in the firewall. See [docs/COMPONENT_REVIEW.md](docs/COMPONENT_REVIEW.md) for current engine and dependency assessment.

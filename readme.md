@@ -1,44 +1,100 @@
-# Android Security Suite
+# Android Firewall
 
-A free, Apache-2.0 Android 8+ prototype written in Kotlin and Jetpack Compose. No ads, telemetry, accounts, cloud services, or `INTERNET` permission.
+Free, open-source (Apache-2.0) Android 8+ local firewall and security inspection app.
+**Experimental; not production-ready.** There is no paid API, advertising,
+telemetry, account, remote VPN, or runtime `INTERNET` permission in the firewall.
 
-- Dashboard with local firewall state, app inventory and root indicators.
-- Rootless firewall: selected application UIDs route to a local `VpnService` TUN; captured IPv4/IPv6 packets are discarded. Unselected applications bypass the VPN normally. Rules persist locally; applying rules restarts the tunnel.
-- Installed package search, system-app filter, declared permissions and Android-reported grant flags. Sensitive permission indicators are informational, not malware verdicts.
-- Read-only root heuristics (visible `su`/Magisk artifacts, test build keys).
-- Document-picker APK inspection: SHA-256, package/SDK metadata, signer certificate fingerprints, permission declarations, debuggable/cleartext flags, DEX/native library counts. APKs are never installed/executed; temporary private copies are deleted. 100 MiB input limit.
-- Bounded network monitor: captured packet/byte counters and the latest 40 destination/protocol/port headers in memory. No packet payload persistence, interception certificates, DNS lookups, or TLS decryption.
+The current engine is a **packet sink**, not a general traffic forwarder. Selected
+application UIDs enter a local `VpnService`; captured packets are discarded.
+IPv4/IPv6, TCP/UDP and encrypted DNS traffic reaching that interface are dropped
+without inspecting TLS. Unselected applications normally use their own network.
+Actual routing verification and remaining release gates are in
+[SECURITY_REVIEW.md](SECURITY_REVIEW.md) and [TESTING.md](TESTING.md).
 
-## Build
+## Protection modes — read before enabling
 
-Requires JDK 17 or 21, Android SDK platform 35, build tools 34.0.0, and Linux x86-64 for the bootstrap defaults. Gradle 8.10.2 is pinned with a distribution checksum. Dependencies are downloaded at build time; the installed app operates offline.
+| Configuration | Behavior and limits |
+| --- | --- |
+| Ordinary VPN | Blocks selected UIDs while the tunnel exists. Process death, stop, reboot or permission loss can allow traffic. **Not fail-closed.** |
+| Android Always-on only | Requests restart by Android; does not itself prevent bypass while the VPN is absent. |
+| Always-on + **Block connections without VPN** (Lockdown) | Android enforces the no-VPN network block for the current user/profile. Only the user/device administrator can enable this system setting. |
+| Lockdown with this sink-only engine | **Unselected apps also lose connectivity.** Apps outside the VPN application list cannot bypass Lockdown, and selected apps enter the sink. This is a device/profile-wide network block, not useful selective forwarding. |
+| Empty selection or any missing selected package | Safety mode captures and discards **all apps'** traffic. Select installed packages to narrow the application list. |
+
+For crash/reboot protection: enable the firewall, open **Android VPN settings**,
+then enable both **Always-on VPN** and **Block connections without VPN** for
+Android Firewall. Check the system setting yourself. The emulator also exposed intermittent failure to automatically restart after
+SIGKILL; manual Start can restore all-app safety mode. Lockdown blocking and service
+availability are separate requirements. Runtime setting detection
+is available from Android 10; Android 8–9 display an unknown status. Some OEMs
+manage these settings differently. Another VPN cannot run simultaneously.
+Revoking authorization or disabling system Lockdown changes the security boundary;
+the app cannot override the user or Android. Before first unlock after reboot,
+Lockdown must provide the block while credential-encrypted rules are unavailable.
+
+A replacement tunnel is established before the old owner is released. Failed
+updates retain previous rules when possible and explicitly report that new rules
+are unconfirmed. Packet reader failure retains the owning descriptor and reports
+monitoring loss, rather than intentionally releasing routing. These controls
+**do not replace Android Lockdown** and do not prove zero-loss handover on all OEMs.
+
+## Features and limits
+
+- Persistent per-application block selections; shared UIDs may affect multiple packages.
+- Bounded in-memory activity: all read packets/bytes counted, at most 20 metadata
+  samples/second, latest 40 samples retained. No payload storage or app attribution.
+- IPv4 options and bounded IPv6 extension/fragment metadata parsing. Parsing and
+  checksums never grant access: even malformed packets reaching the sink are discarded.
+- Installed app/permission inventory and informational root heuristics.
+- Local APK metadata, SHA-256 and signer certificate fingerprints; no installation,
+  execution, uploads, malware verdicts or independent signature verification.
+  APK input <=100 MiB, directory <=8 MiB, <=20,000 central records, manifest <=4 MiB;
+  unsupported ZIP64/split archives are rejected before `ZipFile` indexing.
+
+**Not implemented:** selective IP/port/protocol allow/deny rules, domain blocklists,
+DNS forwarding/filtering, TCP/IP forwarding, connection migration or per-flow
+accounting. DoT/DoH destinations are blocked with their selected UID; encrypted
+hostnames are not decoded. Those features require an audited forwarding engine,
+not a metadata-parser switch. See [component review](docs/COMPONENT_REVIEW.md).
+
+Delegated traffic from another UID can escape ordinary application rules. Package
+inventory/rules cover the current Android user/profile. System app rules may
+break device services. No root, bootloader unlock or privileged runtime access is
+required. Battery performance, OEM background restrictions and real cellular
+handover still require physical-device validation.
+
+## Build and tests
+
+Requires JDK 17/21, Android SDK 35 and build tools 34.0.0. Gradle, dependencies and
+resolved transitive versions/checksums are pinned. Downloaded bytes are checked
+against committed SHA-256 metadata. Initial metadata was bootstrapped through
+TLS from configured upstream repositories; this is reproducibility control, not
+independent proof that upstream packages have no vulnerabilities.
 
 ```sh
-./scripts/bootstrap.sh   # installs the pinned SDK under /workspace/toolchains, builds, tests and lints
-./scripts/check.sh       # repeat checks using the installed SDK
+./scripts/bootstrap.sh       # first-time SDK/JDK setup; accepts development SDK licenses
+./scripts/check.sh           # firewall debug APK, JVM tests, lint
+./scripts/gradle.sh :app:assembleRelease :app:testReleaseUnitTest :app:lintRelease
+python3 scripts/test-traffic-endpoint.py
+./scripts/device-check.sh    # disposable emulator + independent local traffic receipts
 ```
 
-For an existing Android development machine, set `ANDROID_HOME` to its SDK and run `./gradlew assembleDebug testDebugUnitTest lintDebug`. Bootstrap uses `curl`, `unzip`, Python 3 and a trusted host Java runtime, downloading a checksum-pinned open-source Temurin JDK 21 when no compiler is available. It preserves TLS/artifact verification and accepts SDK development licenses. No system package installation or rooting occurs.
+Use `scripts/gradle.sh` for arbitrary ordered tasks (for example, `:app:clean`
+before build tasks). Do not run multiple builds in the same working tree.
+Set `ANDROID_HOME`, `ANDROID_USER_HOME`, `GRADLE_USER_HOME`/`JAVA_HOME` for an
+existing toolchain. See [TESTING.md](TESTING.md) for setup, artifacts and gaps.
 
-APK: `app/build/outputs/apk/debug/app-debug.apk` (debug signed; not a production release). Unit results: `app/build/reports/tests/testDebugUnitTest/index.html`. Lint: `app/build/reports/lint-results-debug.html`.
+The `probe` module is a separate test-only UID with network permission, a pinned
+local test certificate and a signature-protected receiver. It cannot be a release
+variant and is never a dependency of the firewall. Its public fixture private key
+must never be deployed. The firewall release does not contain that permission,
+certificate, receiver, or private key. Release APKs are unsigned until a maintainer
+uses their own release signing configuration; debug APKs are not production releases.
 
-With an Android device/emulator connected: `./gradlew connectedDebugAndroidTest` runs device smoke tests. Install using `adb install -r app/build/outputs/apk/debug/app-debug.apk`.
+## Licensing and privacy
 
-## Device acceptance checks
-
-1. Open the app. On Apps, select an expendable network client; leave another client allowed. Enable the firewall and approve Android's VPN dialog.
-2. New IPv4 and IPv6 requests from the blocked client should fail. Its captured packets should appear in Activity. The allowed client should still connect. Test Wi-Fi and cellular separately, including DNS and existing connections.
-3. Change selection while active; stop via the dashboard/notification and confirm normal connectivity returns. Revoke VPN permission in Settings and verify the stopped status.
-4. Inspect a known APK and compare its SHA-256 with `sha256sum`. Review sensitive permission declarations and grant flags against Android Settings.
-
-These are required device acceptance checks before trusting the prototype as a firewall. JVM tests do not prove Android VPN routing behavior.
-
-## Limits
-
-This is an experimental app, not a malware scanner, integrity attestation service, remote VPN, or anonymity tool. Root hiding can evade the checks, and development ROMs can trigger false positives. Static APK metadata cannot establish safety; signature fingerprints are metadata, not independent cryptographic signature verification. APK splits/bundles and full code analysis are unsupported. No numerical security score is invented.
-
-VPN blocking applies only while the foreground service is alive. The firewall is **fail-open** on stop, process death, reboot, permission revocation or rule-transition gaps. Always-on/lockdown is deliberately unsupported. Another VPN cannot run simultaneously. Shared-UID packages may be affected together, and traffic delegated to another UID may escape an app's rule. System app rules can disrupt connectivity or services. Package inventory is limited to the current Android user/profile. There is no app attribution for captured packets, historical usage, allowed traffic visibility, or IPv6 extension-header transport parsing. Uninstall clears rules. Packet metadata is memory-only and bounded; counters reset on tunnel restart. No root, bootloader unlock, flashing, or privileged shell commands are used.
-
-## Open-source research and licensing
-
-Reviewed [NetGuard](https://github.com/M66B/NetGuard), [TrackerControl](https://github.com/TrackerControl/tracker-control-android), and [AFWall+](https://github.com/ukanth/afwall) for their local VPN/firewall approaches and licensing. NetGuard and TrackerControl's richer forwarding/filtering engines are substantially larger than this MVP; AFWall+ requires root. No GPL project source or assets were copied. The app uses original sink-only VPN code and the public Android APIs, reusing Apache-licensed AndroidX/Compose libraries through Gradle. See [THIRD_PARTY.md](THIRD_PARTY.md) and [LICENSE](LICENSE).
+See [LICENSE](LICENSE), [THIRD_PARTY.md](THIRD_PARTY.md), and
+[component assessment](docs/COMPONENT_REVIEW.md). No GPL forwarding code was copied.
+Rules are private local preferences with backup/transfer excluded. App data is
+removed on uninstall; activity metadata is memory-only. Test logs contain synthetic
+local test traffic and are not a runtime product telemetry feature.
