@@ -1,0 +1,1 @@
+FAIL: automatic process restart not observed after SIGKILL

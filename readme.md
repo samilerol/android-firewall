@@ -1,8 +1,9 @@
 # Android Firewall
 
-Free, open-source (Apache-2.0) Android 8+ app firewall. Version 0.2.0-beta1 is a
+Free, open-source (Apache-2.0) Android 8+ app firewall. Version 0.2.0-beta2 is a
 scoped MVP: block selected applications, or explicitly block every application.
-Local APK/permission inspection remains available. See [MVP scope and acceptance](docs/MVP.md).
+Local APK/permission inspection remains available. See [current functional validation](docs/FUNCTIONAL_VALIDATION.md)
+and [initial MVP acceptance](docs/MVP.md).
 **Experimental; not production-ready.** There is no paid API, advertising,
 telemetry, account, remote VPN, or runtime `INTERNET` permission in the firewall.
 
@@ -41,8 +42,8 @@ the normal Start button stays disabled; choose apps or the explicit all-app mode
 
 For crash/reboot protection: enable the firewall, open **Android VPN settings**,
 then enable both **Always-on VPN** and **Block connections without VPN** for
-Android Firewall. Check the system setting yourself. The emulator also exposed intermittent failure to automatically restart after
-SIGKILL; manually apply selections again, or choose **Apps → Block all apps →
+Android Firewall. Check the system setting yourself. The beta2 emulator crash test again failed to observe automatic restart within
+60 seconds after SIGKILL; manually apply selections again, or choose **Apps → Block all apps →
 Apply and start**, then confirm to restore all-app capture. Lockdown blocking and service
 availability are separate requirements. Runtime setting detection
 is available from Android 10; Android 8–9 display an unknown status. Some OEMs
@@ -68,6 +69,8 @@ monitoring loss, rather than intentionally releasing routing. These controls
   runs; missing selections enter safety mode until resolved. Only Android Lockdown
   protects transition windows after process/network loss.
 - Search and Internet/system-app filters; shared UID impact is shown when known.
+- Failed disk writes restore prior in-memory rules before readers can observe the
+  attempted configuration. Free storage and retry; this is not a power-loss guarantee.
 - Separate saved/applied status, visible retry after monitoring/update failure,
   and Stop even if establishment failed. Shared UIDs affect multiple packages.
 - Bounded in-memory activity: all read packets/bytes counted, at most 20 metadata
@@ -75,6 +78,8 @@ monitoring loss, rather than intentionally releasing routing. These controls
 - IPv4 options and bounded IPv6 extension/fragment metadata parsing. Parsing and
   checksums never grant access: even malformed packets reaching the sink are discarded.
 - Installed app/permission inventory and informational root heuristics.
+- Cancellable local APK analysis with owned-stream closure and temporary-copy cleanup.
+  Invalid, missing and oversized documents report errors and allow another attempt.
 - Local APK metadata, SHA-256 and signer certificate fingerprints; no installation,
   execution, uploads, malware verdicts or independent signature verification.
   APK input <=100 MiB, directory <=8 MiB, <=20,000 central records, manifest <=4 MiB;
@@ -114,7 +119,7 @@ Set `ANDROID_HOME`, `ANDROID_USER_HOME`, `GRADLE_USER_HOME`/`JAVA_HOME` for an
 existing toolchain. See [TESTING.md](TESTING.md) for setup, artifacts and gaps.
 
 The `probe` module is a separate test-only UID with network permission, a pinned
-local test certificate and a signature-protected receiver. It cannot be a release
+local test certificate, signature-protected receiver and read-only APK document fixture. It cannot be a release
 variant and is never a dependency of the firewall. Its public fixture private key
 must never be deployed. The firewall release does not contain that permission,
 certificate, receiver, or private key. Release APKs are unsigned until a maintainer

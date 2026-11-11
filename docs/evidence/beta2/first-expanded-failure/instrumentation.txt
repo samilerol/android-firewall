@@ -1,0 +1,471 @@
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.DeviceSmokeTest:
+INSTRUMENTATION_STATUS: test=legacySelectionsRemainReadable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=legacySelectionsRemainReadable
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=oversizedApkIsRejectedBeforeMetadataParsing
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=oversizedApkIsRejectedBeforeMetadataParsing
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=firewallRulesPersistLocally
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=firewallRulesPersistLocally
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=invalidAndMissingApksFailWithoutLeavingCopies
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=invalidAndMissingApksFailWithoutLeavingCopies
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=readsInstalledAppsAndOwnApkWithoutExecutingIt
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=readsInstalledAppsAndOwnApkWithoutExecutingIt
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=failedRuleWriteDoesNotPublishUncommittedConfiguration
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=failedRuleWriteDoesNotPublishUncommittedConfiguration
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.FirewallIntegrationTest:
+INSTRUMENTATION_STATUS: test=intentionalAllAppModeAndSelectiveRecovery
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=intentionalAllAppModeAndSelectiveRecovery
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=existingTcpConnectionsCannotContinueAfterVpnReady
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=existingTcpConnectionsCannotContinueAfterVpnReady
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=emptyAndMissingSelectionsCaptureAllTraffic
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=emptyAndMissingSelectionsCaptureAllTraffic
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=selectedAndUnselectedUidTrafficWithRealProtocols
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=selectedAndUnselectedUidTrafficWithRealProtocols
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=removedAndReinstalledSelectionIsAutomaticallyReapplied
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=removedAndReinstalledSelectionIsAutomaticallyReapplied
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=repeatedRestartsAndStopReleaseReadersAndDescriptors
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=repeatedRestartsAndStopReleaseReadersAndDescriptors
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=readerDuplicateDoesNotOwnOriginalDescriptor
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=readerDuplicateDoesNotOwnOriginalDescriptor
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=authorizationRevocationStopsTheOldVpn
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=authorizationRevocationStopsTheOldVpn
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=statusRequestDoesNotStartProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=statusRequestDoesNotStartProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.MvpFlowTest:
+INSTRUMENTATION_STATUS: test=apkAnalysisCancelsClosesPipeAndRecoversFromInvalidInput
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=apkAnalysisCancelsClosesPipeAndRecoversFromInvalidInput
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=freshEmptySelectionCannotStartAllAppBlocking
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Empty selection enables Start
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertFalse(Assert.java:65)
+	at org.suite.security.MvpFlowTest.freshEmptySelectionCannotStartAllAppBlocking(MvpFlowTest.kt:142)
+
+INSTRUMENTATION_STATUS: stream=
+Error in freshEmptySelectionCannotStartAllAppBlocking(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Empty selection enables Start
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertFalse(Assert.java:65)
+	at org.suite.security.MvpFlowTest.freshEmptySelectionCannotStartAllAppBlocking(MvpFlowTest.kt:142)
+
+INSTRUMENTATION_STATUS: test=freshEmptySelectionCannotStartAllAppBlocking
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=draftModeSurvivesRecreationAndCancelDoesNotChangeProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=draftModeSurvivesRecreationAndCancelDoesNotChangeProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=searchSystemInternetFiltersAndPermissionsAreUsable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: System apps were not filtered; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [App firewall & permissions, null, android.widget.TextView, false, true], [Choose a mode, edit your selections, then apply once. Changes do not affect the current VPN until applied. Shared-UID apps may be affected together; system app rules can disrupt device functions., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Blocking mode, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, true, true], [Selected apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, false, true], [Block all apps, null, android.widget.TextView, false, true], [1 apps selected. Unselected apps can connect only while Android Lockdown is OFF., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Apply and start, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [com.android.inputmethod.latin, null, android.widget.EditText, false, true], [Search name or package, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Show system apps, null, android.widget.TextView, false, true], [null, null, android.widget.CheckBox, false, true], [null, null, android.view.View, false, true], [Refresh, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:166)
+
+INSTRUMENTATION_STATUS: stream=
+Error in searchSystemInternetFiltersAndPermissionsAreUsable(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: System apps were not filtered; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [App firewall & permissions, null, android.widget.TextView, false, true], [Choose a mode, edit your selections, then apply once. Changes do not affect the current VPN until applied. Shared-UID apps may be affected together; system app rules can disrupt device functions., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Blocking mode, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, true, true], [Selected apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, false, true], [Block all apps, null, android.widget.TextView, false, true], [1 apps selected. Unselected apps can connect only while Android Lockdown is OFF., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Apply and start, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [com.android.inputmethod.latin, null, android.widget.EditText, false, true], [Search name or package, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Show system apps, null, android.widget.TextView, false, true], [null, null, android.widget.CheckBox, false, true], [null, null, android.view.View, false, true], [Refresh, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:166)
+
+INSTRUMENTATION_STATUS: test=searchSystemInternetFiltersAndPermissionsAreUsable
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=explicitAllAppConfirmationStartsAndStopsTheRealVpn
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=explicitAllAppConfirmationStartsAndStopsTheRealVpn
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=notificationStopInvokesItsRealPendingIntent
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=notificationStopInvokesItsRealPendingIntent
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=documentPickerReadsRealDownloadedApkAndReturnsReport
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.NullPointerException
+	at org.suite.security.MvpFlowTest.click(MvpFlowTest.kt:73)
+	at org.suite.security.MvpFlowTest.documentPickerReadsRealDownloadedApkAndReturnsReport(MvpFlowTest.kt:299)
+
+INSTRUMENTATION_STATUS: stream=
+Error in documentPickerReadsRealDownloadedApkAndReturnsReport(org.suite.security.MvpFlowTest):
+java.lang.NullPointerException
+	at org.suite.security.MvpFlowTest.click(MvpFlowTest.kt:73)
+	at org.suite.security.MvpFlowTest.documentPickerReadsRealDownloadedApkAndReturnsReport(MvpFlowTest.kt:299)
+
+INSTRUMENTATION_STATUS: test=documentPickerReadsRealDownloadedApkAndReturnsReport
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=vpnSettingsRoundTripPreservesProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Did not return from Settings; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [No forwarding or anonymity service. Empty or missing app rules enter safety mode and block ALL apps. Lockdown with this sink-only design also blocks unselected apps., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Application overview, null, android.widget.TextView, false, true], [167 installed packages, null, android.widget.TextView, false, true], [53 declare selected sensitive permissions, null, android.widget.TextView, false, true], [Permissions indicate access potential, not malicious behavior., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Refresh device checks, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Root indicators, null, android.widget.TextView, false, true], [2 heuristic indicators found, null, android.widget.TextView, false, true], [• Artifact visible: /system/xbin/su, null, android.widget.TextView, false, true], [• Build signed with test keys (also common on development ROMs), null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.vpnSettingsRoundTripPreservesProtection(MvpFlowTest.kt:233)
+
+INSTRUMENTATION_STATUS: stream=
+Error in vpnSettingsRoundTripPreservesProtection(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Did not return from Settings; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [No forwarding or anonymity service. Empty or missing app rules enter safety mode and block ALL apps. Lockdown with this sink-only design also blocks unselected apps., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Application overview, null, android.widget.TextView, false, true], [167 installed packages, null, android.widget.TextView, false, true], [53 declare selected sensitive permissions, null, android.widget.TextView, false, true], [Permissions indicate access potential, not malicious behavior., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Refresh device checks, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Root indicators, null, android.widget.TextView, false, true], [2 heuristic indicators found, null, android.widget.TextView, false, true], [• Artifact visible: /system/xbin/su, null, android.widget.TextView, false, true], [• Build signed with test keys (also common on development ROMs), null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.vpnSettingsRoundTripPreservesProtection(MvpFlowTest.kt:233)
+
+INSTRUMENTATION_STATUS: test=vpnSettingsRoundTripPreservesProtection
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=documentPickerCancelOrMissingHandlerLeavesAppUsable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=documentPickerCancelOrMissingHandlerLeavesAppUsable
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=capturedTrafficIsRenderedOnActivityScreen
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=capturedTrafficIsRenderedOnActivityScreen
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=declinedVpnConsentNeverClaimsProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Declined VPN consent not reported; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Your device, under your control, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [App firewall • beta, null, android.widget.TextView, false, true], [VPN service stopped. Only Android Lockdown can prevent network bypass., null, android.widget.TextView, false, true], [1 saved selections • 0 captured packets discarded • 0 bytes, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Start blocking, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Select apps, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time., null, android.widget.TextView, false, true], [Last service check: Android Lockdown was OFF: stopping or losing this VPN can allow traffic., null, android.widget.TextView, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.declinedVpnConsentNeverClaimsProtection(MvpFlowTest.kt:280)
+
+INSTRUMENTATION_STATUS: stream=
+Error in declinedVpnConsentNeverClaimsProtection(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Declined VPN consent not reported; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Your device, under your control, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [App firewall • beta, null, android.widget.TextView, false, true], [VPN service stopped. Only Android Lockdown can prevent network bypass., null, android.widget.TextView, false, true], [1 saved selections • 0 captured packets discarded • 0 bytes, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Start blocking, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Select apps, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time., null, android.widget.TextView, false, true], [Last service check: Android Lockdown was OFF: stopping or losing this VPN can allow traffic., null, android.widget.TextView, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.declinedVpnConsentNeverClaimsProtection(MvpFlowTest.kt:280)
+
+INSTRUMENTATION_STATUS: test=declinedVpnConsentNeverClaimsProtection
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 653.022
+There were 5 failures:
+1) freshEmptySelectionCannotStartAllAppBlocking(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Empty selection enables Start
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertFalse(Assert.java:65)
+	at org.suite.security.MvpFlowTest.freshEmptySelectionCannotStartAllAppBlocking(MvpFlowTest.kt:142)
+2) searchSystemInternetFiltersAndPermissionsAreUsable(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: System apps were not filtered; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [App firewall & permissions, null, android.widget.TextView, false, true], [Choose a mode, edit your selections, then apply once. Changes do not affect the current VPN until applied. Shared-UID apps may be affected together; system app rules can disrupt device functions., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Blocking mode, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, true, true], [Selected apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.widget.RadioButton, false, true], [Block all apps, null, android.widget.TextView, false, true], [1 apps selected. Unselected apps can connect only while Android Lockdown is OFF., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Apply and start, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [com.android.inputmethod.latin, null, android.widget.EditText, false, true], [Search name or package, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Show system apps, null, android.widget.TextView, false, true], [null, null, android.widget.CheckBox, false, true], [null, null, android.view.View, false, true], [Refresh, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:166)
+3) documentPickerReadsRealDownloadedApkAndReturnsReport(org.suite.security.MvpFlowTest)
+java.lang.NullPointerException
+	at org.suite.security.MvpFlowTest.click(MvpFlowTest.kt:73)
+	at org.suite.security.MvpFlowTest.documentPickerReadsRealDownloadedApkAndReturnsReport(MvpFlowTest.kt:299)
+4) vpnSettingsRoundTripPreservesProtection(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Did not return from Settings; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [No forwarding or anonymity service. Empty or missing app rules enter safety mode and block ALL apps. Lockdown with this sink-only design also blocks unselected apps., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Application overview, null, android.widget.TextView, false, true], [167 installed packages, null, android.widget.TextView, false, true], [53 declare selected sensitive permissions, null, android.widget.TextView, false, true], [Permissions indicate access potential, not malicious behavior., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Refresh device checks, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Root indicators, null, android.widget.TextView, false, true], [2 heuristic indicators found, null, android.widget.TextView, false, true], [• Artifact visible: /system/xbin/su, null, android.widget.TextView, false, true], [• Build signed with test keys (also common on development ROMs), null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.vpnSettingsRoundTripPreservesProtection(MvpFlowTest.kt:233)
+5) declinedVpnConsentNeverClaimsProtection(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Declined VPN consent not reported; nodes=[[null, null, android.widget.FrameLayout, false, true], [null, null, android.widget.LinearLayout, false, true], [null, null, android.widget.FrameLayout, false, true], [null, null, androidx.compose.ui.platform.ComposeView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Your device, under your control, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [App firewall • beta, null, android.widget.TextView, false, true], [VPN service stopped. Only Android Lockdown can prevent network bypass., null, android.widget.TextView, false, true], [1 saved selections • 0 captured packets discarded • 0 bytes, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Start blocking, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Select apps, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time., null, android.widget.TextView, false, true], [Last service check: Android Lockdown was OFF: stopping or losing this VPN can allow traffic., null, android.widget.TextView, false, true], [For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app., null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [Open Android VPN settings, null, android.widget.TextView, false, true], [null, null, android.widget.Button, false, true], [null, null, android.view.View, false, true], [Android Firewall, null, android.widget.TextView, false, true], [LOCAL • PRIVATE • OPEN SOURCE, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Overview, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Apps, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [Activity, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [APK, null, android.widget.TextView, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true], [null, null, android.view.View, false, true]]
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.suite.security.MvpFlowTest.await(MvpFlowTest.kt:58)
+	at org.suite.security.MvpFlowTest.declinedVpnConsentNeverClaimsProtection(MvpFlowTest.kt:280)
+
+FAILURES!!!
+Tests run: 27,  Failures: 5
+
+
+INSTRUMENTATION_CODE: -1

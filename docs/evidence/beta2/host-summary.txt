@@ -1,0 +1,5 @@
+Debug JVM: {'tests': 29, 'failures': 0, 'errors': 0, 'skipped': 0}
+Release JVM: {'tests': 29, 'failures': 0, 'errors': 0, 'skipped': 0}
+app-debug lint: [('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning')]
+app-release lint: [('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning')]
+probe-debug lint: [('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('GradleDependency', 'Warning'), ('DataExtractionRules', 'Warning'), ('MissingApplicationIcon', 'Warning')]

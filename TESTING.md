@@ -29,7 +29,9 @@ Reports: `app/build/reports/tests/test{Debug,Release}UnitTest/`,
 Install SDK `emulator`, an AOSP system image, and create a disposable AVD. Hardware
 acceleration is strongly recommended. Set `ANDROID_AVD_HOME` explicitly when
 using a custom user directory. Wait for `adb shell getprop sys.boot_completed`
-to return `1`. Then:
+to return `1`; also verify the user is RUNNING_UNLOCKED, Wi-Fi/connectivity services exist,
+and a default underlay network is present. A minimal ATD image omits DocumentsUI
+and full Settings; its missing-handler checks do not replace those full-image tests. Then:
 
 ```sh
 export ANDROID_SERIAL=emulator-5554
@@ -40,7 +42,10 @@ The script requires a single emulator serial and refuses a real device or existi
 Lockdown configuration. It installs the separately signed-debug `probe`, firewall,
 and instrumentation APKs, then runs `DeviceSmokeTest` and
 `FirewallIntegrationTest` and `MvpFlowTest` (real accessibility UI actions). The
-MVP suite contains 14 app tests plus one independent-UID control. It starts only local host endpoints, no remote DNS
+MVP suite contains 27 app tests plus independent-UID preflights and a final control. See
+[the current function matrix](docs/FUNCTIONAL_VALIDATION.md). The script refuses
+negative tests until all six transports succeed from an application UID for each
+enabled address family. It starts only local host endpoints, no remote DNS
 resolver or paid service. Endpoints bind host loopback; the emulator reaches them
 through `10.0.2.2` and, with the IPv6 flag, `fec0::2`. Ensure those ports are free before running.
 

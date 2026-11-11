@@ -1,0 +1,16 @@
+11-11 19:15:29.787  5199  5244 D ProfileInstaller: Installing profile for org.suite.security
+11-11 19:18:55.219   507   564 D ConnectivityService: ConnectivityService NetworkRequestInfo binderDied(NetworkRequest [ LISTEN id=160, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ], android.os.BinderProxy@17125e4)
+11-11 19:18:55.322   507   524 W ActivityManager: Exception when unbinding service org.suite.security/.FirewallService
+11-11 19:18:55.341   507  2800 I ActivityManager: Process org.suite.security (pid 5199) has died: prcp FGS 
+11-11 19:19:55.120   507   534 I ActivityManager: Start proc 5474:org.suite.security/u0a131 for service {org.suite.security/org.suite.security.FirewallService}
+11-11 19:19:56.105   677   677 D InterruptionStateProvider: No bubble up: not allowed to bubble: 0|org.suite.security|1|null|10131
+11-11 19:19:56.116   677   677 D InterruptionStateProvider: No heads up: unimportant notification: 0|org.suite.security|1|null|10131
+11-11 19:20:01.357  5474  5474 I TetheringManager: registerTetheringEventCallback:org.suite.security
+11-11 19:20:01.820   677   677 D InterruptionStateProvider: No bubble up: not allowed to bubble: 0|org.suite.security|1|null|10131
+11-11 19:20:01.860   677   677 D InterruptionStateProvider: No heads up: unimportant notification: 0|org.suite.security|1|null|10131
+11-11 19:20:01.936   507  2800 I Vpn     : Established by org.suite.security on tun0
+11-11 19:20:07.851  5474  5540 D ProfileInstaller: Installing profile for org.suite.security
+11-11 19:21:45.783   507   988 I ActivityManager: Force stopping org.suite.security appid=10131 user=0: from pid 5740
+11-11 19:21:45.788   507   988 I ActivityManager: Killing 5474:org.suite.security/u0a131 (adj 100): stop org.suite.security due to from pid 5740
+11-11 19:21:46.699   507  2794 D ConnectivityService: ConnectivityService NetworkRequestInfo binderDied(NetworkRequest [ LISTEN id=161, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ], android.os.BinderProxy@56bd8b)
+11-11 19:21:47.535   507   618 E ConnectivityService: RemoteException caught trying to send a callback msg for NetworkRequest [ LISTEN id=161, [ Transports: VPN Capabilities: NOT_RESTRICTED&TRUSTED&FOREGROUND Uid: 10131 AdministratorUids: [] RequestorUid: 10131 RequestorPackageName: org.suite.security] ]

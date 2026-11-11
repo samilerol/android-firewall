@@ -1,0 +1,577 @@
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.DeviceSmokeTest:
+INSTRUMENTATION_STATUS: test=legacySelectionsRemainReadable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=legacySelectionsRemainReadable
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=oversizedApkIsRejectedBeforeMetadataParsing
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=oversizedApkIsRejectedBeforeMetadataParsing
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=firewallRulesPersistLocally
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=firewallRulesPersistLocally
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=invalidAndMissingApksFailWithoutLeavingCopies
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=invalidAndMissingApksFailWithoutLeavingCopies
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=readsInstalledAppsAndOwnApkWithoutExecutingIt
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=readsInstalledAppsAndOwnApkWithoutExecutingIt
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=failedRuleWriteDoesNotPublishUncommittedConfiguration
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.DeviceSmokeTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=failedRuleWriteDoesNotPublishUncommittedConfiguration
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.FirewallIntegrationTest:
+INSTRUMENTATION_STATUS: test=intentionalAllAppModeAndSelectiveRecovery
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.intentionalAllAppModeAndSelectiveRecovery(FirewallIntegrationTest.kt:147)
+
+INSTRUMENTATION_STATUS: stream=
+Error in intentionalAllAppModeAndSelectiveRecovery(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.intentionalAllAppModeAndSelectiveRecovery(FirewallIntegrationTest.kt:147)
+
+INSTRUMENTATION_STATUS: test=intentionalAllAppModeAndSelectiveRecovery
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=existingTcpConnectionsCannotContinueAfterVpnReady
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Persistent connection baseline failed expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.existingTcpConnectionsCannotContinueAfterVpnReady(FirewallIntegrationTest.kt:194)
+
+INSTRUMENTATION_STATUS: stream=
+Error in existingTcpConnectionsCannotContinueAfterVpnReady(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: Persistent connection baseline failed expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.existingTcpConnectionsCannotContinueAfterVpnReady(FirewallIntegrationTest.kt:194)
+
+INSTRUMENTATION_STATUS: test=existingTcpConnectionsCannotContinueAfterVpnReady
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=emptyAndMissingSelectionsCaptureAllTraffic
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.emptyAndMissingSelectionsCaptureAllTraffic(FirewallIntegrationTest.kt:128)
+
+INSTRUMENTATION_STATUS: stream=
+Error in emptyAndMissingSelectionsCaptureAllTraffic(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.emptyAndMissingSelectionsCaptureAllTraffic(FirewallIntegrationTest.kt:128)
+
+INSTRUMENTATION_STATUS: test=emptyAndMissingSelectionsCaptureAllTraffic
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=selectedAndUnselectedUidTrafficWithRealProtocols
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: tcp baseline failed: (0, ConnectException) expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.selectedAndUnselectedUidTrafficWithRealProtocols(FirewallIntegrationTest.kt:100)
+
+INSTRUMENTATION_STATUS: stream=
+Error in selectedAndUnselectedUidTrafficWithRealProtocols(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: tcp baseline failed: (0, ConnectException) expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.selectedAndUnselectedUidTrafficWithRealProtocols(FirewallIntegrationTest.kt:100)
+
+INSTRUMENTATION_STATUS: test=selectedAndUnselectedUidTrafficWithRealProtocols
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=removedAndReinstalledSelectionIsAutomaticallyReapplied
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.removedAndReinstalledSelectionIsAutomaticallyReapplied(FirewallIntegrationTest.kt:169)
+
+INSTRUMENTATION_STATUS: stream=
+Error in removedAndReinstalledSelectionIsAutomaticallyReapplied(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.removedAndReinstalledSelectionIsAutomaticallyReapplied(FirewallIntegrationTest.kt:169)
+
+INSTRUMENTATION_STATUS: test=removedAndReinstalledSelectionIsAutomaticallyReapplied
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=repeatedRestartsAndStopReleaseReadersAndDescriptors
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=repeatedRestartsAndStopReleaseReadersAndDescriptors
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=readerDuplicateDoesNotOwnOriginalDescriptor
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=readerDuplicateDoesNotOwnOriginalDescriptor
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=authorizationRevocationStopsTheOldVpn
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.authorizationRevocationStopsTheOldVpn(FirewallIntegrationTest.kt:208)
+
+INSTRUMENTATION_STATUS: stream=
+Error in authorizationRevocationStopsTheOldVpn(org.suite.security.FirewallIntegrationTest):
+java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.authorizationRevocationStopsTheOldVpn(FirewallIntegrationTest.kt:208)
+
+INSTRUMENTATION_STATUS: test=authorizationRevocationStopsTheOldVpn
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=statusRequestDoesNotStartProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.FirewallIntegrationTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=statusRequestDoesNotStartProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+org.suite.security.MvpFlowTest:
+INSTRUMENTATION_STATUS: test=apkAnalysisCancelsClosesPipeAndRecoversFromInvalidInput
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=apkAnalysisCancelsClosesPipeAndRecoversFromInvalidInput
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=freshEmptySelectionCannotStartAllAppBlocking
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=freshEmptySelectionCannotStartAllAppBlocking
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=draftModeSurvivesRecreationAndCancelDoesNotChangeProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=draftModeSurvivesRecreationAndCancelDoesNotChangeProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=searchSystemInternetFiltersAndPermissionsAreUsable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Cannot scroll to Hide permissions
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:188)
+
+INSTRUMENTATION_STATUS: stream=
+Error in searchSystemInternetFiltersAndPermissionsAreUsable(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Cannot scroll to Hide permissions
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:188)
+
+INSTRUMENTATION_STATUS: test=searchSystemInternetFiltersAndPermissionsAreUsable
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=explicitAllAppConfirmationStartsAndStopsTheRealVpn
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=explicitAllAppConfirmationStartsAndStopsTheRealVpn
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=notificationStopInvokesItsRealPendingIntent
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=notificationStopInvokesItsRealPendingIntent
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=documentPickerReadsRealDownloadedApkAndReturnsReport
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=documentPickerReadsRealDownloadedApkAndReturnsReport
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=vpnSettingsRoundTripPreservesProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=vpnSettingsRoundTripPreservesProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Cannot scroll to Clear rules and stop
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode(MvpFlowTest.kt:114)
+
+INSTRUMENTATION_STATUS: stream=
+Error in clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Cannot scroll to Clear rules and stop
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode(MvpFlowTest.kt:114)
+
+INSTRUMENTATION_STATUS: test=clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=documentPickerCancelOrMissingHandlerLeavesAppUsable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=documentPickerCancelOrMissingHandlerLeavesAppUsable
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=capturedTrafficIsRenderedOnActivityScreen
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Cannot scroll to 10.0.2.2:18080
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.capturedTrafficIsRenderedOnActivityScreen(MvpFlowTest.kt:284)
+
+INSTRUMENTATION_STATUS: stream=
+Error in capturedTrafficIsRenderedOnActivityScreen(org.suite.security.MvpFlowTest):
+java.lang.AssertionError: Cannot scroll to 10.0.2.2:18080
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.capturedTrafficIsRenderedOnActivityScreen(MvpFlowTest.kt:284)
+
+INSTRUMENTATION_STATUS: test=capturedTrafficIsRenderedOnActivityScreen
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=declinedVpnConsentNeverClaimsProtection
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=org.suite.security.MvpFlowTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=27
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=declinedVpnConsentNeverClaimsProtection
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 341.951
+There were 9 failures:
+1) intentionalAllAppModeAndSelectiveRecovery(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.intentionalAllAppModeAndSelectiveRecovery(FirewallIntegrationTest.kt:147)
+2) existingTcpConnectionsCannotContinueAfterVpnReady(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: Persistent connection baseline failed expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.existingTcpConnectionsCannotContinueAfterVpnReady(FirewallIntegrationTest.kt:194)
+3) emptyAndMissingSelectionsCaptureAllTraffic(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.emptyAndMissingSelectionsCaptureAllTraffic(FirewallIntegrationTest.kt:128)
+4) selectedAndUnselectedUidTrafficWithRealProtocols(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: tcp baseline failed: (0, ConnectException) expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.selectedAndUnselectedUidTrafficWithRealProtocols(FirewallIntegrationTest.kt:100)
+5) removedAndReinstalledSelectionIsAutomaticallyReapplied(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: Baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.removedAndReinstalledSelectionIsAutomaticallyReapplied(FirewallIntegrationTest.kt:169)
+6) authorizationRevocationStopsTheOldVpn(org.suite.security.FirewallIntegrationTest)
+java.lang.AssertionError: Endpoint baseline required expected:<1> but was:<0>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.suite.security.FirewallIntegrationTest.authorizationRevocationStopsTheOldVpn(FirewallIntegrationTest.kt:208)
+7) searchSystemInternetFiltersAndPermissionsAreUsable(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Cannot scroll to Hide permissions
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.searchSystemInternetFiltersAndPermissionsAreUsable(MvpFlowTest.kt:188)
+8) clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Cannot scroll to Clear rules and stop
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.clearingLastSelectionRequiresConfirmationAndDoesNotActivateSafetyMode(MvpFlowTest.kt:114)
+9) capturedTrafficIsRenderedOnActivityScreen(org.suite.security.MvpFlowTest)
+java.lang.AssertionError: Cannot scroll to 10.0.2.2:18080
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertNotNull(Assert.java:713)
+	at org.suite.security.MvpFlowTest.scrollTo(MvpFlowTest.kt:89)
+	at org.suite.security.MvpFlowTest.scrollTo$default(MvpFlowTest.kt:82)
+	at org.suite.security.MvpFlowTest.capturedTrafficIsRenderedOnActivityScreen(MvpFlowTest.kt:284)
+
+FAILURES!!!
+Tests run: 27,  Failures: 9
+
+
+INSTRUMENTATION_CODE: -1

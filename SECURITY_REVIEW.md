@@ -1,4 +1,4 @@
-> Follow-up MVP changes and their current acceptance evidence: [docs/MVP.md](docs/MVP.md). The execution record below predates 0.2.0-beta1.
+> Current beta2 functional validation, confirmed storage-failure fix and remaining gates: [docs/FUNCTIONAL_VALIDATION.md](docs/FUNCTIONAL_VALIDATION.md). Earlier MVP evidence: [docs/MVP.md](docs/MVP.md). The execution record below predates beta1/beta2.
 
 # Security and release-readiness review
 

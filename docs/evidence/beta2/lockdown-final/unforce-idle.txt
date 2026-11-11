@@ -1,0 +1,1 @@
+Light state: OVERRIDE, deep state: IDLE

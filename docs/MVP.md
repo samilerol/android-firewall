@@ -1,3 +1,5 @@
+> Historical beta1 acceptance. Beta2 changes and current evidence: [FUNCTIONAL_VALIDATION.md](FUNCTIONAL_VALIDATION.md).
+
 # Android Firewall 0.2.0-beta1 — MVP
 
 This MVP is an unprivileged local **app blocker**, not a forwarding firewall or a
