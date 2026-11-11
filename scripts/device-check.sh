@@ -59,7 +59,7 @@ from pathlib import Path
 root = Path(sys.argv[1])
 result = (root / "instrumentation.txt").read_text()
 match = re.search(r"OK \((\d+) tests?\)", result)
-assert match and int(match[1]) >= 6, "Android test run failed or incomplete"
+assert match and int(match[1]) >= 8, "Android test run failed or incomplete"
 assert not re.search(r"FAILURES|INSTRUMENTATION_FAILED|shortMsg=", result), "Instrumentation failure"
 independent = (root / "independent-control.txt").read_text()
 assert re.search(r"OK \(1 test\)", independent) and "FAILURES" not in independent, "Independent baseline failed"

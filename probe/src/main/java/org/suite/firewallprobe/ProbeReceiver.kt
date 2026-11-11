@@ -16,80 +16,25 @@ import javax.net.ssl.TrustManagerFactory
 
 /** Signed, separate-UID test fixture restricted to the emulator's controlled host. */
 class ProbeReceiver : BroadcastReceiver() {
+    companion object {
+        private val heldLock = Any()
+        private var held: Pair<String, Socket>? = null
+    }
+    private fun exchange(socket: Socket, payload: ByteArray) {
+        socket.getOutputStream().write(payload)
+        val response = ByteArray(payload.size)
+        java.io.DataInputStream(socket.getInputStream()).readFully(response)
+        check(response.contentEquals(payload))
+    }
     override fun onReceive(context: Context, intent: Intent) {
         val pending = goAsync()
         Thread {
             try {
                 val host = intent.getStringExtra("host") ?: "10.0.2.2"
-                require(host in setOf("10.0.2.2", "fec0::2")) { "Only controlled emulator endpoint permitted" }
                 val port = intent.getIntExtra("port", 18080)
-                require(port in setOf(18080, 18081, 1053, 1853, 18443))
                 val kind = intent.getStringExtra("kind") ?: "tcp"
                 val nonce = intent.getStringExtra("nonce") ?: "probe"
-                require(nonce.matches(Regex("[a-z0-9-]{1,64}")))
-                val message = nonce.toByteArray(Charsets.US_ASCII)
-                when (kind) {
-                    "udp", "dns" -> DatagramSocket().use { socket ->
-                        socket.soTimeout = 1500
-                        val payload = if (kind == "dns") dnsQuery(nonce) else message
-                        socket.send(DatagramPacket(payload, payload.size, InetAddress.getByName(host), port))
-                        val reply = DatagramPacket(ByteArray(1024), 1024)
-                        socket.receive(reply)
-                        check(reply.address == InetAddress.getByName(host) && reply.port == port)
-                        if (kind == "dns") checkDns(reply.data.copyOf(reply.length))
-                        else check(reply.length == payload.size && reply.data.take(payload.size) == payload.toList())
-                    }
-                    "tcp", "dns-tcp", "dot", "doh" -> {
-                        val socket = if (kind == "tcp" || kind == "dns-tcp") Socket() else {
-                            val certificate = context.assets.open("endpoint.crt").use {
-                                CertificateFactory.getInstance("X.509").generateCertificate(it)
-                            }
-                            val store = KeyStore.getInstance(KeyStore.getDefaultType()).apply { load(null); setCertificateEntry("test-endpoint", certificate) }
-                            val trust = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply { init(store) }
-                            SSLContext.getInstance("TLS").apply { init(null, trust.trustManagers, null) }.socketFactory.createSocket()
-                        }
-                        socket.use {
-                            it.soTimeout = 1500
-                            it.connect(InetSocketAddress(host, port), 1500)
-                            if (it is SSLSocket) {
-                                it.sslParameters = it.sslParameters.apply { endpointIdentificationAlgorithm = "HTTPS" }
-                                it.startHandshake()
-                            }
-                            val payload = when (kind) {
-                                "dot", "dns-tcp" -> dnsQuery(nonce).let { query -> byteArrayOf((query.size ushr 8).toByte(), query.size.toByte()) + query }
-                                "doh" -> dnsQuery(nonce).let { query ->
-                                    "POST /dns-query HTTP/1.1\r\nHost: ${if (host.contains(':')) "[$host]" else host}\r\nContent-Type: application/dns-message\r\nContent-Length: ${query.size}\r\n\r\n".toByteArray(Charsets.US_ASCII) + query
-                                }
-                                else -> message
-                            }
-                            it.getOutputStream().write(payload)
-                            val input = it.getInputStream().buffered()
-                            when (kind) {
-                                "dot", "dns-tcp" -> {
-                                    val size = (input.read() shl 8) or input.read()
-                                    check(size in 12..1024)
-                                    checkDns(ByteArray(size).also { response -> java.io.DataInputStream(input).readFully(response) })
-                                }
-                                "doh" -> {
-                                    val header = StringBuilder()
-                                    while (!header.endsWith("\r\n\r\n") && header.length < 4096) {
-                                        val b = input.read(); check(b >= 0); header.append(b.toChar())
-                                    }
-                                    check(header.startsWith("HTTP/1.0 200") || header.startsWith("HTTP/1.1 200"))
-                                    val size = Regex("(?i)Content-Length: ([0-9]+)").find(header)?.groupValues?.get(1)?.toInt() ?: error("No body")
-                                    check(size in 12..1024)
-                                    checkDns(ByteArray(size).also { response -> java.io.DataInputStream(input).readFully(response) })
-                                }
-                                else -> {
-                                    val response = ByteArray(message.size)
-                                    java.io.DataInputStream(input).readFully(response)
-                                    check(response.contentEquals(message))
-                                }
-                            }
-                        }
-                    }
-                    else -> error("Unknown test")
-                }
+                execute(context, host, port, kind, nonce)
                 pending.resultCode = 1
                 pending.resultData = "connected"
             } catch (e: Exception) {
@@ -97,6 +42,89 @@ class ProbeReceiver : BroadcastReceiver() {
                 pending.resultData = e.javaClass.simpleName
             } finally { pending.finish() }
         }.start()
+    }
+    internal fun execute(context: Context, host: String, port: Int, kind: String, nonce: String) {
+        require(host in setOf("10.0.2.2", "fec0::2")) { "Only controlled emulator endpoint permitted" }
+        require(port in setOf(18080, 18081, 1053, 1853, 18443))
+        require(nonce.matches(Regex("[a-z0-9-]{1,64}")))
+        val message = nonce.toByteArray(Charsets.US_ASCII)
+        when (kind) {
+            "prepare-vpn" -> check(android.net.VpnService.prepare(context) == null) { "Test VPN authorization missing" }
+            "tcp-close" -> synchronized(heldLock) { held?.second?.close(); held = null }
+            "tcp-open" -> {
+                val socket = Socket()
+                try {
+                    socket.soTimeout = 1500
+                    socket.connect(InetSocketAddress(host, port), 1500)
+                    exchange(socket, message)
+                    synchronized(heldLock) { held?.second?.close(); held = host to socket }
+                } catch (e: Exception) { socket.close(); throw e }
+            }
+            "tcp-held" -> {
+                val existing = synchronized(heldLock) { held.also { held = null } } ?: error("No held connection")
+                existing.second.use { socket -> check(existing.first == host); exchange(socket, message) }
+            }
+            "udp", "dns" -> DatagramSocket().use { socket ->
+                socket.soTimeout = 1500
+                val payload = if (kind == "dns") dnsQuery(nonce) else message
+                socket.send(DatagramPacket(payload, payload.size, InetAddress.getByName(host), port))
+                val reply = DatagramPacket(ByteArray(1024), 1024)
+                socket.receive(reply)
+                check(reply.address == InetAddress.getByName(host) && reply.port == port)
+                if (kind == "dns") checkDns(reply.data.copyOf(reply.length))
+                else check(reply.length == payload.size && reply.data.take(payload.size) == payload.toList())
+            }
+            "tcp", "dns-tcp", "dot", "doh" -> {
+                val socket = if (kind == "tcp" || kind == "dns-tcp") Socket() else {
+                    val certificate = context.assets.open("endpoint.crt").use {
+                        CertificateFactory.getInstance("X.509").generateCertificate(it)
+                    }
+                    val store = KeyStore.getInstance(KeyStore.getDefaultType()).apply { load(null); setCertificateEntry("test-endpoint", certificate) }
+                    val trust = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply { init(store) }
+                    SSLContext.getInstance("TLS").apply { init(null, trust.trustManagers, null) }.socketFactory.createSocket()
+                }
+                socket.use {
+                    it.soTimeout = 1500
+                    it.connect(InetSocketAddress(host, port), 1500)
+                    if (it is SSLSocket) {
+                        it.sslParameters = it.sslParameters.apply { endpointIdentificationAlgorithm = "HTTPS" }
+                        it.startHandshake()
+                    }
+                    val payload = when (kind) {
+                        "dot", "dns-tcp" -> dnsQuery(nonce).let { query -> byteArrayOf((query.size ushr 8).toByte(), query.size.toByte()) + query }
+                        "doh" -> dnsQuery(nonce).let { query ->
+                            "POST /dns-query HTTP/1.1\r\nHost: ${if (host.contains(':')) "[$host]" else host}\r\nContent-Type: application/dns-message\r\nContent-Length: ${query.size}\r\n\r\n".toByteArray(Charsets.US_ASCII) + query
+                        }
+                        else -> message
+                    }
+                    it.getOutputStream().write(payload)
+                    val input = it.getInputStream().buffered()
+                    when (kind) {
+                        "dot", "dns-tcp" -> {
+                            val size = (input.read() shl 8) or input.read()
+                            check(size in 12..1024)
+                            checkDns(ByteArray(size).also { response -> java.io.DataInputStream(input).readFully(response) })
+                        }
+                        "doh" -> {
+                            val header = StringBuilder()
+                            while (!header.endsWith("\r\n\r\n") && header.length < 4096) {
+                                val b = input.read(); check(b >= 0); header.append(b.toChar())
+                            }
+                            check(header.startsWith("HTTP/1.0 200") || header.startsWith("HTTP/1.1 200"))
+                            val size = Regex("(?i)Content-Length: ([0-9]+)").find(header)?.groupValues?.get(1)?.toInt() ?: error("No body")
+                            check(size in 12..1024)
+                            checkDns(ByteArray(size).also { response -> java.io.DataInputStream(input).readFully(response) })
+                        }
+                        else -> {
+                            val response = ByteArray(message.size)
+                            java.io.DataInputStream(input).readFully(response)
+                            check(response.contentEquals(message))
+                        }
+                    }
+                }
+            }
+            else -> error("Unknown test")
+        }
     }
     private fun checkDns(response: ByteArray) {
         check(response.size >= 12 && response[0] == 0x12.toByte() && response[1] == 0x34.toByte())

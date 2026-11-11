@@ -32,10 +32,16 @@ def read_exact(stream, size):
 
 class Echo(socketserver.StreamRequestHandler):
     def handle(self):
-        self.request.settimeout(3)
-        data = self.request.recv(1024)
-        record("tcp", data)
-        self.request.sendall(data)
+        self.request.settimeout(120)  # bounded hold across VPN startup for lifecycle tests
+        while True:
+            try:
+                data = self.request.recv(1024)
+            except (TimeoutError, ConnectionError):
+                return
+            if not data:
+                return
+            record("tcp", data)
+            self.request.sendall(data)
 
 class UDP(socketserver.BaseRequestHandler):
     def handle(self):

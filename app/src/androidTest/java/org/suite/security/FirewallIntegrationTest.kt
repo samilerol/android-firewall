@@ -33,7 +33,7 @@ class FirewallIntegrationTest {
         stop()
     }
     @After fun restore() {
-        stop()
+        try { probe("tcp-close", 18080) } finally { stop() }
         Rules.save(context, saved)
     }
     private fun shell(command: String) {
@@ -77,6 +77,15 @@ class FirewallIntegrationTest {
         assertTrue("Missing/unauthorized test fixture: $result", result.first in 0..1)
         return result
     }
+    private fun assertRecovery(host: String = "10.0.2.2") {
+        val deadline = SystemClock.elapsedRealtime() + 30000
+        var result = probe("tcp", 18080, host)
+        while (result.first != 1 && SystemClock.elapsedRealtime() < deadline) {
+            SystemClock.sleep(100)
+            result = probe("tcp", 18080, host)
+        }
+        assertEquals("Underlying network did not recover within 30 seconds: $host $result", 1, result.first)
+    }
     @Test fun selectedAndUnselectedUidTrafficWithRealProtocols() {
         val cases = listOf("tcp" to 18080, "udp" to 18081, "dns" to 1053, "dns-tcp" to 1053, "dot" to 1853, "doh" to 18443)
         val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")
@@ -104,7 +113,7 @@ class FirewallIntegrationTest {
         }
         for (host in hosts) for ((kind, port) in cases) assertEquals("$kind $host unselected probe failed", 1, probe(kind, port, host).first)
         stop()
-        assertEquals(1, probe("tcp", 18080).first)
+        assertRecovery()
     }
     @Test fun emptyAndMissingSelectionsCaptureAllTraffic() {
         assertEquals("Endpoint baseline required", 1, probe("tcp", 18080).first)
@@ -123,6 +132,37 @@ class FirewallIntegrationTest {
             phase = "control"
             stop()
         }
+    }
+    @Test fun existingTcpConnectionsCannotContinueAfterVpnReady() {
+        val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")
+        for (host in hosts) {
+            phase = "control"
+            assertEquals("Persistent connection baseline failed", 1, probe("tcp-open", 18080, host).first)
+            val started = SystemClock.elapsedRealtime()
+            start(setOf(probePackage))
+            assertTrue("Server idle timeout could invalidate test", SystemClock.elapsedRealtime() - started < 90000)
+            phase = "blocked"
+            val result = probe("tcp-held", 18080, host)
+            assertEquals("Pre-existing TCP connection escaped VPN", 0, result.first)
+            assertTrue("Fixture process/socket vanished: $result", result.second in setOf("SocketException", "SocketTimeoutException", "ConnectException", "EOFException"))
+            phase = "control"
+            stop()
+            assertRecovery(host)
+        }
+    }
+    @Test fun authorizationRevocationStopsTheOldVpn() {
+        assertEquals("Endpoint baseline required", 1, probe("tcp", 18080).first)
+        start(setOf(probePackage))
+        phase = "blocked"
+        assertEquals(0, probe("tcp", 18080).first)
+        // A pre-consented second package takes ownership through the real public API.
+        shell("appops set $probePackage ACTIVATE_VPN allow")
+        assertEquals("Competing authorization failed", 1, probe("prepare-vpn", 18080).first)
+        await("Revoked VPN still claims readiness") { !FirewallStatus.state.value.active && !FirewallStatus.state.value.starting }
+        await("Revoked reader leaked") { Thread.getAllStackTraces().keys.none { it.name == "firewall-packets" && it.isAlive } }
+        phase = "control"
+        assertRecovery()
+        assertNull("Restore suite consent", VpnService.prepare(context))
     }
     @Test fun readerDuplicateDoesNotOwnOriginalDescriptor() {
         val pipe = ParcelFileDescriptor.createPipe()

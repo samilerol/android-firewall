@@ -6,34 +6,31 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.net.InetSocketAddress
-import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
 
-/** Independent UID remains testable after the firewall process is force-stopped. */
+/** Remains testable after the firewall process is force-stopped; no VPN state is changed. */
 @RunWith(AndroidJUnit4::class)
 class IndependentNetworkTest {
-    @Test fun tcpConnectivity() {
+    @Test fun protocolConnectivity() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
         val args = InstrumentationRegistry.getArguments()
         val expected = args.getString("expected") ?: "allowed"
         require(expected in setOf("allowed", "blocked"))
         val host = args.getString("host") ?: "10.0.2.2"
         require(host in setOf("10.0.2.2", "fec0::2"))
-        val nonce = "${if (expected == "blocked") "blocked" else "control"}-independent-${SystemClock.elapsedRealtime()}".toByteArray(Charsets.US_ASCII)
-        var connected = false
-        try {
-            Socket().use { socket ->
-                socket.soTimeout = 3000
-                socket.connect(InetSocketAddress(host, 18080), 3000)
-                socket.getOutputStream().write(nonce)
-                val response = ByteArray(nonce.size)
-                java.io.DataInputStream(socket.getInputStream()).readFully(response)
-                assertArrayEquals("Invalid endpoint response", nonce, response)
+        val protocols = args.getString("protocols")?.split(',') ?: listOf("tcp")
+        require(protocols.isNotEmpty() && protocols.all { it in setOf("tcp", "udp", "dns", "dns-tcp", "dot", "doh") })
+        for (kind in protocols) {
+            val port = when (kind) { "udp" -> 18081; "dns", "dns-tcp" -> 1053; "dot" -> 1853; "doh" -> 18443; else -> 18080 }
+            val nonce = "${if (expected == "blocked") "blocked" else "control"}-independent-$kind-${SystemClock.elapsedRealtime()}"
+            var connected = false
+            try {
+                ProbeReceiver().execute(instrumentation.targetContext, host, port, kind, nonce)
                 connected = true
-            }
-        } catch (_: SocketTimeoutException) { }
-        catch (_: SocketException) { }
-        assertEquals("Independent UID connectivity mismatch", expected == "allowed", connected)
+            } catch (_: SocketTimeoutException) { }
+            catch (_: SocketException) { }
+            assertEquals("Independent UID $host $kind connectivity mismatch", expected == "allowed", connected)
+        }
     }
 }
