@@ -30,6 +30,7 @@ object ApkAnalyzer {
                     }
                 }
             } ?: error("Cannot open the selected document")
+            ArchiveLimits.check(file)
             var dex = 0
             var native = 0
             var entries = 0
