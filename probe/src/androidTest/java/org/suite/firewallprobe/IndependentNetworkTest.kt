@@ -36,11 +36,12 @@ class IndependentNetworkTest {
             val port = when (kind) { "udp" -> 18081; "dns", "dns-tcp" -> 1053; "dot" -> 1853; "doh" -> 18443; else -> 18080 }
             val nonce = "${if (expected == "blocked") "blocked" else "control"}-independent-$kind-${SystemClock.elapsedRealtime()}"
             var connected = false
+            var networkError: String? = null
             try {
                 ProbeReceiver().execute(instrumentation.targetContext, host, port, kind, nonce)
                 connected = true
-            } catch (e: IOException) { if (!networkDenied(e)) throw e }
-            assertEquals("Independent UID $host $kind connectivity mismatch", expected == "allowed", connected)
+            } catch (e: IOException) { if (!networkDenied(e)) throw e; networkError = e.toString() }
+            assertEquals("Independent UID $host $kind connectivity mismatch: $networkError", expected == "allowed", connected)
         }
     }
     private fun networkDenied(error: IOException): Boolean {

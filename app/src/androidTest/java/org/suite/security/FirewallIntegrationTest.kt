@@ -25,6 +25,11 @@ class FirewallIntegrationTest {
     private var saved = FirewallRules(emptySet())
     private var phase = "control"
     private val probePackage = "org.suite.firewallprobe"
+    private val otherPackage by lazy {
+        listOf("com.android.settings", "android").first { name ->
+            runCatching { @Suppress("DEPRECATION") context.packageManager.getApplicationInfo(name, 0) }.isSuccess
+        }
+    }
 
     @Before fun prepare() {
         saved = Rules.load(context)
@@ -105,7 +110,7 @@ class FirewallIntegrationTest {
         await("No captured selected traffic") { FirewallStatus.state.value.packets > 0 }
         phase = "control"
         // Switch the VPN to another installed UID. The probe should again reach endpoints.
-        Rules.save(context, setOf("com.android.settings"))
+        Rules.save(context, setOf(otherPackage))
         assertEquals("Saving alone replaced active rules", setOf(probePackage), FirewallStatus.state.value.appliedPackages)
         phase = "blocked"
         assertEquals("Saved but unapplied rules allowed traffic", 0, probe("tcp", 18080).first)
@@ -113,7 +118,7 @@ class FirewallIntegrationTest {
         context.startForegroundService(Intent(context, FirewallService::class.java))
         await("Replacement rules did not become ready", 60000) {
             val state = FirewallStatus.state.value
-            state.active && state.appliedPackages == setOf("com.android.settings")
+            state.active && state.appliedPackages == setOf(otherPackage)
         }
         for (host in hosts) for ((kind, port) in cases) assertEquals("$kind $host unselected probe failed", 1, probe(kind, port, host).first)
         stop()
@@ -140,13 +145,13 @@ class FirewallIntegrationTest {
     @Test fun intentionalAllAppModeAndSelectiveRecovery() {
         val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")
         for (host in hosts) assertEquals("Baseline required", 1, probe("tcp", 18080, host).first)
-        Rules.save(context, setOf("com.android.settings"), FirewallMode.BLOCK_ALL)
+        Rules.save(context, setOf(otherPackage), FirewallMode.BLOCK_ALL)
         context.startForegroundService(Intent(context, FirewallService::class.java))
         await("All-app mode did not become ready", 60000) { FirewallStatus.state.value.active && FirewallStatus.state.value.appliedMode == FirewallMode.BLOCK_ALL }
         assertFalse("Explicit mode was labeled as quarantine", FirewallStatus.state.value.quarantine)
         phase = "blocked"
         for (host in hosts) for ((kind, port) in listOf("tcp" to 18080, "udp" to 18081)) assertEquals(0, probe(kind, port, host).first)
-        Rules.save(context, setOf("com.android.settings"))
+        Rules.save(context, setOf(otherPackage))
         context.startForegroundService(Intent(context, FirewallService::class.java))
         await("Selective mode did not return", 60000) { FirewallStatus.state.value.active && FirewallStatus.state.value.appliedMode == FirewallMode.SELECTED_APPS }
         phase = "control"

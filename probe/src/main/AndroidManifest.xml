@@ -2,6 +2,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <permission android:name="org.suite.security.TEST_PROBE" android:protectionLevel="signature" />
     <application android:label="Firewall test probe" android:allowBackup="false" android:usesCleartextTraffic="false">
+        <provider android:name=".DocumentFixtureProvider" android:authorities="org.suite.firewallprobe.documents" android:exported="true" android:permission="org.suite.security.TEST_PROBE" />
         <receiver android:name=".ProbeReceiver" android:exported="true" android:permission="org.suite.security.TEST_PROBE" />
     </application>
 </manifest>
