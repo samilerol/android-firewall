@@ -4,6 +4,7 @@ Free, open-source (Apache-2.0) Android 8+ app firewall. Version 0.2.0-beta2 is a
 scoped MVP: block selected applications, or explicitly block every application.
 Local APK/permission inspection remains available. See [current functional validation](docs/FUNCTIONAL_VALIDATION.md)
 and [initial MVP acceptance](docs/MVP.md).
+Latest stored-policy corruption fix and host evidence: [validation](docs/STORED_POLICY_VALIDATION.md).
 **Experimental; not production-ready.** There is no paid API, advertising,
 telemetry, account, remote VPN, or runtime `INTERNET` permission in the firewall.
 

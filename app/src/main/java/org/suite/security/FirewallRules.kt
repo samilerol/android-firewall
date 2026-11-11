@@ -8,10 +8,20 @@ data class FirewallRules(val packages: Set<String>, val mode: FirewallMode = Fir
 
 object Rules {
     @Synchronized fun load(context: Context): FirewallRules {
-        val values = context.getSharedPreferences("firewall", Context.MODE_PRIVATE).all
-        val packages = (values["blocked"] as? Set<*>)?.filterIsInstance<String>()?.toSet().orEmpty()
-        val mode = FirewallMode.entries.firstOrNull { it.name == values["mode"] } ?: FirewallMode.SELECTED_APPS
-        return FirewallRules(packages, mode)
+        return decode(context.getSharedPreferences("firewall", Context.MODE_PRIVATE).all)
+    }
+    internal fun decode(values: Map<String, *>): FirewallRules {
+        val storedPackages = values["blocked"]
+        val storedMode = FirewallMode.entries.firstOrNull { it.name == values["mode"] }
+        // Missing mode is the supported legacy schema. Present but invalid fields
+        // must never silently narrow capture by dropping entries or changing modes.
+        if ((values.containsKey("mode") && storedMode == null) ||
+            (values.containsKey("blocked") &&
+                (storedPackages !is Set<*> || storedPackages.any { it !is String }))) {
+            return FirewallRules(emptySet()) // CapturePlan turns this into all-app quarantine.
+        }
+        val packages = (storedPackages as? Set<*>)?.filterIsInstance<String>()?.toSet().orEmpty()
+        return FirewallRules(packages, storedMode ?: FirewallMode.SELECTED_APPS)
     }
     fun blocked(context: Context): Set<String> = load(context).packages
     @Synchronized fun save(context: Context, packages: Set<String>, mode: FirewallMode = FirewallMode.SELECTED_APPS) {
