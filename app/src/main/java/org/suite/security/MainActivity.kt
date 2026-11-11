@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
                             TextButton(onClick = { runCatching { startActivity(Intent(Settings.ACTION_VPN_SETTINGS)) }
                                 .onFailure { consentMessage = "Open Android Settings → Network → VPN manually." } }) { Text("Open Android VPN settings") }
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                Button(enabled = blocked.isNotEmpty() || status.active || status.starting, onClick = {
+                                Button(onClick = {
                                     consentMessage = null
                                     if (status.active || status.starting) startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STOP))
                                     else {
@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity() {
                                         val intent = VpnService.prepare(this@MainActivity)
                                         if (intent != null) vpnConsent.launch(intent) else startFirewall()
                                     }
-                                }) { Text(if (status.active || status.starting) "Stop firewall" else "Start best-effort blocking") }
+                                }) { Text(if (status.active || status.starting) "Stop firewall" else if (blocked.isEmpty()) "Start all-app safety mode" else "Start best-effort blocking") }
                                 TextButton(onClick = { tab = 1 }) { Text("Select apps") }
                             }
                             consentMessage?.let { Text(it) }
