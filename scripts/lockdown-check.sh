@@ -53,7 +53,7 @@ check_blocked() {
   local phase="$1" index=0
   for host in "${hosts[@]}"; do
     index=$((index+1))
-    "$adb" -s "$serial" shell am instrument -w -r -e expected blocked -e host "$host" -e protocols tcp,udp,dns,dns-tcp,dot,doh \
+    timeout 240s "$adb" -s "$serial" shell am instrument -w -r -e expected blocked -e host "$host" -e protocols tcp,udp,dns,dns-tcp,dot,doh \
       org.suite.firewallprobe.test/androidx.test.runner.AndroidJUnitRunner > "$artifacts/$phase-$index.txt"
     python3 - "$artifacts/$phase-$index.txt" <<'PY'
 import re, sys
@@ -82,7 +82,7 @@ check_blocked vpn-enabled
 if [[ "${FIREWALL_CRASH:-0}" == 1 ]]; then
   canary_hosts=10.0.2.2
   if [[ "${FIREWALL_IPV6:-0}" == 1 ]]; then canary_hosts+=,fec0::2; fi
-  "$adb" -s "$serial" shell am instrument -w -r -e mode udp-canary -e duration 60000 -e hosts "$canary_hosts" \
+  timeout 180s "$adb" -s "$serial" shell am instrument -w -r -e mode udp-canary -e duration 60000 -e hosts "$canary_hosts" \
     org.suite.firewallprobe.test/androidx.test.runner.AndroidJUnitRunner > "$artifacts/crash-canary.txt" &
   canary_pid=$!
   python3 - "$artifacts/crash-canary.txt" <<'PYCODE'
@@ -188,6 +188,27 @@ else:
     raise SystemExit('Software emulator reboot did not complete in time')
 PY
   [[ "$(read_setting always_on_vpn_app)" == org.suite.security && "$(read_setting always_on_vpn_lockdown)" == 1 ]]
+  # boot_completed can precede usable services, especially under software emulation.
+  python3 - "$adb" "$serial" <<'PYCODE'
+import subprocess, sys, time
+end = time.monotonic() + 180
+while time.monotonic() < end:
+    ready = True
+    for service in ('wifi', 'connectivity'):
+        try:
+            result = subprocess.run([sys.argv[1], '-s', sys.argv[2], 'shell', 'service', 'check', service],
+                                    capture_output=True, text=True, timeout=10)
+            ready &= result.stdout.strip() == 'Service ' + service + ': found'
+        except subprocess.TimeoutExpired:
+            ready = False
+    if ready:
+        break
+    time.sleep(2)
+else:
+    raise SystemExit('Android network services unavailable after boot; reboot test is inconclusive')
+PYCODE
+  "$adb" -s "$serial" shell svc wifi enable
+  "$adb" -s "$serial" shell cmd wifi connect-network AndroidWifi open > "$artifacts/post-boot-wifi-recovery.txt"
   wait_underlay after-reboot
   check_blocked after-reboot
 fi
