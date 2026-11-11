@@ -1,3 +1,5 @@
+> Follow-up MVP changes and their current acceptance evidence: [docs/MVP.md](docs/MVP.md). The execution record below predates 0.2.0-beta1.
+
 # Security and release-readiness review
 
 **Status: experimental; NOT production-ready.** No penetration-test certification,

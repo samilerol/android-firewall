@@ -1,6 +1,8 @@
 # Android Firewall
 
-Free, open-source (Apache-2.0) Android 8+ local firewall and security inspection app.
+Free, open-source (Apache-2.0) Android 8+ app firewall. Version 0.2.0-beta1 is a
+scoped MVP: block selected applications, or explicitly block every application.
+Local APK/permission inspection remains available. See [MVP scope and acceptance](docs/MVP.md).
 **Experimental; not production-ready.** There is no paid API, advertising,
 telemetry, account, remote VPN, or runtime `INTERNET` permission in the firewall.
 
@@ -11,6 +13,20 @@ without inspecting TLS. Unselected applications normally use their own network.
 Actual routing verification and remaining release gates are in
 [SECURITY_REVIEW.md](SECURITY_REVIEW.md) and [TESTING.md](TESTING.md).
 
+## Quick start
+
+1. Open **Apps**, keep **Selected apps**, and select the apps to block.
+2. Tap **Apply and start**, then accept Android's VPN authorization request.
+3. Wait for **Android routing confirmed** on Overview before relying on blocking.
+4. Edit selections and apply once to change rules. Use **Stop firewall** to stop.
+5. To deliberately disconnect every app, choose **Block all apps**, apply, and
+   confirm. To allow unselected apps again, apply **Selected apps** and verify
+   Android Lockdown is OFF.
+
+App switches edit a draft; they do not themselves prove an app is blocked. Failed
+updates keep prior protection when possible and expose Retry. With no selections,
+the normal Start button stays disabled; choose apps or the explicit all-app mode.
+
 ## Protection modes — read before enabling
 
 | Configuration | Behavior and limits |
@@ -19,12 +35,15 @@ Actual routing verification and remaining release gates are in
 | Android Always-on only | Requests restart by Android; does not itself prevent bypass while the VPN is absent. |
 | Always-on + **Block connections without VPN** (Lockdown) | Android enforces the no-VPN network block for the current user/profile. Only the user/device administrator can enable this system setting. |
 | Lockdown with this sink-only engine | **Unselected apps also lose connectivity.** Apps outside the VPN application list cannot bypass Lockdown, and selected apps enter the sink. This is a device/profile-wide network block, not useful selective forwarding. |
-| Empty selection or any missing selected package | Safety mode captures and discards **all apps'** traffic. Select installed packages to narrow the application list. |
+| Explicit **Block all apps** | After confirmation, captures and discards every application's traffic. Individual selections are preserved for later. |
+| Manual clear of the last selection | **Clear rules and stop** asks for confirmation. It does not activate all-app capture. Android Lockdown, if enabled, continues blocking outside the app. |
+| System startup with empty rules, or any missing saved package | Safety mode captures and discards **all apps'** traffic. Apply installed selections to narrow the application list. |
 
 For crash/reboot protection: enable the firewall, open **Android VPN settings**,
 then enable both **Always-on VPN** and **Block connections without VPN** for
 Android Firewall. Check the system setting yourself. The emulator also exposed intermittent failure to automatically restart after
-SIGKILL; manual Start can restore all-app safety mode. Lockdown blocking and service
+SIGKILL; manually apply selections again, or choose **Apps → Block all apps →
+Apply and start**, then confirm to restore all-app capture. Lockdown blocking and service
 availability are separate requirements. Runtime setting detection
 is available from Android 10; Android 8–9 display an unknown status. Some OEMs
 manage these settings differently. Another VPN cannot run simultaneously.
@@ -40,7 +59,17 @@ monitoring loss, rather than intentionally releasing routing. These controls
 
 ## Features and limits
 
-- Persistent per-application block selections; shared UIDs may affect multiple packages.
+- Persistent per-application block selections and an explicit all-app mode.
+- Edit a draft, then **Apply and start** once. Toggling app switches does not
+  rebuild the VPN or silently change protection. Drafts survive activity recreation;
+  closing/discarding a draft does not save it. Removing the last selection requires
+  confirmation to clear and stop. All-app mode also requires confirmation.
+- Selected-package removal/reinstall events refresh UID routing while the service
+  runs; missing selections enter safety mode until resolved. Only Android Lockdown
+  protects transition windows after process/network loss.
+- Search and Internet/system-app filters; shared UID impact is shown when known.
+- Separate saved/applied status, visible retry after monitoring/update failure,
+  and Stop even if establishment failed. Shared UIDs affect multiple packages.
 - Bounded in-memory activity: all read packets/bytes counted, at most 20 metadata
   samples/second, latest 40 samples retained. No payload storage or app attribution.
 - IPv4 options and bounded IPv6 extension/fragment metadata parsing. Parsing and

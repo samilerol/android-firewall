@@ -39,7 +39,8 @@ FIREWALL_IPV6=1 ./scripts/device-check.sh /tmp/firewall-device-evidence
 The script requires a single emulator serial and refuses a real device or existing
 Lockdown configuration. It installs the separately signed-debug `probe`, firewall,
 and instrumentation APKs, then runs `DeviceSmokeTest` and
-`FirewallIntegrationTest`. It starts only local host endpoints, no remote DNS
+`FirewallIntegrationTest` and `MvpFlowTest` (real accessibility UI actions). The
+MVP suite contains 14 app tests plus one independent-UID control. It starts only local host endpoints, no remote DNS
 resolver or paid service. Endpoints bind host loopback; the emulator reaches them
 through `10.0.2.2` and, with the IPv6 flag, `fec0::2`. Ensure those ports are free before running.
 

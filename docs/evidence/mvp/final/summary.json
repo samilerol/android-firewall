@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0-beta1",
+  "source_revision": "9e548782c64ef4141f5e4c339e1433c55f07d029",
+  "production_source_revision": "1cbb147",
+  "app_device_tests": 14,
+  "independent_uid_tests": 1,
+  "marked_blocked_endpoint_receipts": 0,
+  "jvm": {
+    "Debug": {
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "apk_sha256": {
+    "app/build/outputs/apk/debug/app-debug.apk": "a4a924bed4a1e34ada95ec2c59f11ff63be5350b414769a62148b3e1c4e0196b",
+    "app/build/outputs/apk/release/app-release-unsigned.apk": "41f66900a918d2882d98fb32d2f202afb41b1ca96e170293a0c9b3d8af5924aa"
+  }
+}
