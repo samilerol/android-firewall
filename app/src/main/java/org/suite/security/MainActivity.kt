@@ -23,6 +23,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -162,6 +164,12 @@ class MainActivity : ComponentActivity() {
                                 status.appliedMode == FirewallMode.BLOCK_ALL -> "Applied: ALL apps blocked by your explicit choice."
                                 else -> "Applied: ${status.appliedPackages.size} package selections; shared UIDs may affect more apps."
                             })
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Button(enabled = !saving && (status.running || mode == FirewallMode.BLOCK_ALL || blocked.isNotEmpty()), onClick = {
+                                    if (status.running) stopFirewall() else requestApply()
+                                }) { Text(if (status.running) "Stop firewall" else "Start blocking") }
+                                TextButton(onClick = { tab = 1 }) { Text("Select apps") }
+                            }
                             Text("Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time.")
                             Text(when (status.lockdown) {
                                 true -> "Last service check: Android Lockdown was ON: this sink-only VPN also prevents unselected apps from connecting."
@@ -171,12 +179,6 @@ class MainActivity : ComponentActivity() {
                             Text("For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app.")
                             TextButton(onClick = { runCatching { startActivity(Intent(Settings.ACTION_VPN_SETTINGS)) }
                                 .onFailure { consentMessage = "Open Android Settings → Network → VPN manually." } }) { Text("Open Android VPN settings") }
-                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                Button(enabled = !saving && (status.running || mode == FirewallMode.BLOCK_ALL || blocked.isNotEmpty()), onClick = {
-                                    if (status.running) stopFirewall() else requestApply()
-                                }) { Text(if (status.running) "Stop firewall" else "Start blocking") }
-                                TextButton(onClick = { tab = 1 }) { Text("Select apps") }
-                            }
                             if (pending) Text("Unapplied changes. Open Apps and apply to update protection.", color = MaterialTheme.colorScheme.secondary)
                             if (status.running && (!status.monitoring || !status.active || status.retryRequired)) {
                                 TextButton(enabled = !saving, onClick = { requestApply() }) { Text("Retry protection") }
@@ -238,7 +240,7 @@ class MainActivity : ComponentActivity() {
                                 Text(app.packageName, style = MaterialTheme.typography.bodySmall)
                                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("${if (app.packageName in blocked) "Selected for blocking" else "Not selected"} • UID ${app.uid}", modifier = Modifier.padding(top = 12.dp))
-                                    Switch(enabled = mode == FirewallMode.SELECTED_APPS, checked = app.packageName in blocked, onCheckedChange = { deny ->
+                                    Switch(modifier = Modifier.semantics { contentDescription = "Block ${app.label}" }, enabled = mode == FirewallMode.SELECTED_APPS, checked = app.packageName in blocked, onCheckedChange = { deny ->
                                         blocked = if (deny) blocked + app.packageName else blocked - app.packageName
                                     })
                                 }
