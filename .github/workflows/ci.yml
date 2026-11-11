@@ -16,8 +16,11 @@ jobs:
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;34.0.0"
-      - name: Build, unit test, lint
-        run: ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
+      - name: TEMP generate verification entries
+        run: |
+          ./gradlew --no-daemon --write-verification-metadata sha256 :app:assembleDebug :app:testDebugUnitTest :app:lintDebug || true
+          git --no-pager diff --stat -- gradle/verification-metadata.xml
+          git --no-pager diff -U1 -- gradle/verification-metadata.xml | cut -c1-200
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
