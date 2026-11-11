@@ -9,3 +9,5 @@ android {
     lint { abortOnError = true }
 }
 androidComponents { beforeVariants(selector().withBuildType("release")) { it.enable = false } }
+
+dependencyLocking { lockAllConfigurations() }
