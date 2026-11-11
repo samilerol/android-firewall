@@ -36,6 +36,31 @@ class SecurityTest {
         val bytes = ByteArray(48).apply { this[0] = 0x60; this[5] = 8; this[6] = 44 }
         assertNull(PacketParser.parse(bytes, 48)!!.port)
     }
+    @Test fun ipv4DnsAndOptionsUseActualTransportOffset() {
+        val bytes = ByteArray(32).apply {
+            this[0] = 0x47; this[3] = 32; this[9] = 17
+            this[22] = 1; this[23] = -69 // options are not transport ports
+            this[31] = 53
+        }
+        val packet = PacketParser.parse(bytes, bytes.size)!!
+        assertEquals("UDP", packet.protocol)
+        assertEquals(53, packet.port)
+    }
+    @Test fun trailingBytesOutsideDeclaredPacketDoNotBecomePorts() {
+        val v4 = ipv4().apply { this[3] = 20 }
+        assertNull(PacketParser.parse(v4, v4.size)!!.port)
+        assertEquals(20, PacketParser.parse(v4, v4.size)!!.bytes)
+        val v6 = ByteArray(44).apply { this[0] = 0x60; this[6] = 17; this[43] = 53 }
+        assertNull(PacketParser.parse(v6, v6.size)!!.port)
+        assertEquals(40, PacketParser.parse(v6, v6.size)!!.bytes)
+    }
+    @Test fun ipv6TruncationAndIcmpDoNotInventPorts() {
+        val bytes = ByteArray(44).apply { this[0] = 0x60; this[5] = 8; this[6] = 17 }
+        assertNull(PacketParser.parse(bytes, bytes.size))
+        bytes[5] = 4; bytes[6] = 58
+        assertEquals("ICMPv6", PacketParser.parse(bytes, bytes.size)!!.protocol)
+        assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+    }
     @Test fun sensitivePermissionsAreSpecific() {
         assertEquals(listOf("android.permission.CAMERA"), SecurityPolicy.sensitivePermissions(listOf("android.permission.INTERNET", "android.permission.CAMERA")))
     }
