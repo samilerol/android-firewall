@@ -60,12 +60,12 @@ class FirewallIntegrationTest {
         await("VPN did not stop") { !FirewallStatus.state.value.active && !FirewallStatus.state.value.starting }
         SystemClock.sleep(600) // let old reader release its duplicated descriptor
     }
-    private fun probe(kind: String, port: Int): Pair<Int, String?> {
+    private fun probe(kind: String, port: Int, host: String = "10.0.2.2"): Pair<Int, String?> {
         val latch = CountDownLatch(1)
         var result = -1 to "No probe response"
         val intent = Intent().addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES or Intent.FLAG_RECEIVER_FOREGROUND).setComponent(ComponentName(probePackage, "$probePackage.ProbeReceiver"))
-            .putExtra("kind", kind).putExtra("port", port)
-            .putExtra("nonce", "$phase-$kind-${SystemClock.elapsedRealtime()}")
+            .putExtra("kind", kind).putExtra("port", port).putExtra("host", host)
+            .putExtra("nonce", "$phase-${if (host.contains(':')) "v6" else "v4"}-$kind-${SystemClock.elapsedRealtime()}")
         context.sendOrderedBroadcast(intent, null, object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 result = resultCode to resultData
@@ -79,15 +79,17 @@ class FirewallIntegrationTest {
     }
     @Test fun selectedAndUnselectedUidTrafficWithRealProtocols() {
         val cases = listOf("tcp" to 18080, "udp" to 18081, "dns" to 1053, "dns-tcp" to 1053, "dot" to 1853, "doh" to 18443)
-        for ((kind, port) in cases) {
-            val result = probe(kind, port)
+        val hosts = InstrumentationRegistry.getArguments().getString("hosts")?.split(',') ?: listOf("10.0.2.2")
+        require(hosts.all { it in setOf("10.0.2.2", "fec0::2") })
+        for (host in hosts) for ((kind, port) in cases) {
+            val result = probe(kind, port, host)
             assertEquals("$kind baseline failed: $result", 1, result.first)
         }
         start(setOf(probePackage))
         assertFalse(FirewallStatus.state.value.quarantine)
         phase = "blocked"
-        for ((kind, port) in cases) {
-            val result = probe(kind, port)
+        for (host in hosts) for ((kind, port) in cases) {
+            val result = probe(kind, port, host)
             assertEquals("$kind escaped selected-UID sink", 0, result.first)
             assertTrue("Unexpected fixture failure: $result", result.second in setOf("SocketTimeoutException", "ConnectException", "SocketException"))
         }
@@ -96,8 +98,11 @@ class FirewallIntegrationTest {
         // Switch the VPN to another installed UID. The probe should again reach endpoints.
         Rules.save(context, setOf("com.android.settings"))
         context.startForegroundService(Intent(context, FirewallService::class.java))
-        await("Replacement did not reset counters") { FirewallStatus.state.value.packets == 0L }
-        for ((kind, port) in cases) assertEquals("$kind unselected probe failed", 1, probe(kind, port).first)
+        await("Replacement rules did not become ready", 60000) {
+            val state = FirewallStatus.state.value
+            state.active && state.appliedPackages == setOf("com.android.settings")
+        }
+        for (host in hosts) for ((kind, port) in cases) assertEquals("$kind $host unselected probe failed", 1, probe(kind, port, host).first)
         stop()
         assertEquals(1, probe("tcp", 18080).first)
     }

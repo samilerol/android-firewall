@@ -31,7 +31,8 @@ data class FirewallState(
     val active: Boolean = false, val packets: Long = 0, val bytes: Long = 0,
     val events: List<Packet> = emptyList(), val message: String = "Firewall is off",
     val monitoring: Boolean = false, val quarantine: Boolean = false, val starting: Boolean = false,
-    val alwaysOn: Boolean? = null, val lockdown: Boolean? = null
+    val alwaysOn: Boolean? = null, val lockdown: Boolean? = null,
+    val appliedPackages: Set<String> = emptySet()
 )
 object FirewallStatus {
     internal val mutable = MutableStateFlow(FirewallState())
@@ -152,6 +153,7 @@ class FirewallService : VpnService() {
                 previous?.let { close(it) }
                 FirewallStatus.mutable.value = protection(FirewallState(
                     starting = true, monitoring = true, quarantine = quarantine,
+                    appliedPackages = if (quarantine) emptySet() else installed,
                     message = if (observing) "VPN interface created; waiting for Android routing confirmation."
                         else "Cannot observe Android routing; interface retained. Verify Lockdown."
                 ))
