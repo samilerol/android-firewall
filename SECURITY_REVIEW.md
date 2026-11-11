@@ -84,7 +84,8 @@ JVM tests and direct source review are the actual static/automated evidence.
 - Local fixture controls: TCP, UDP, DNS/UDP, DNS/TCP, certificate-verified DoT
   and DoH passed with no upstream DNS/network request.
 - AOSP API 30 x86_64 emulator, software CPU emulation (KVM unavailable): **8 app
-  instrumentation tests plus 1 independent-UID control passed**. IPv4 and IPv6
+  instrumentation tests plus 1 independent-UID control passed**, including a final
+  complete repeat after emulator recovery and restoring normal mode. IPv4 and IPv6
   controls and blocking covered TCP, UDP, DNS/UDP, DNS/TCP, verified DoT and HTTPS
   DoH on local nonstandard ports. Existing TCP connections, real VPN authorization
   revocation, empty/missing selections, duplicated FD ownership and 12 lifecycle

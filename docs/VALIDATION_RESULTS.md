@@ -19,18 +19,19 @@ archive inspection found no fixture cert/key/probe paths. Release is unsigned.
 
 A disposable AOSP API 30 x86_64 emulator ran without KVM, using software CPU
 emulation. This is actual Android execution, not a mocked JVM networking test.
-No physical device was available. An API 35 Google APIs image could not be
+No physical device was available. [Final test summary](evidence/normal-final/summary.json). An API 35 Google APIs image could not be
 extracted within available disk; API 30 AOSP was used instead.
 
-Normal-mode run: **8 firewall instrumentation tests + 1 independent UID test
-passed**. Controls and selected-UID blocks covered IPv4/IPv6 TCP, UDP, wire DNS
+Final normal-mode repeat at `93bb503`, after platform recovery and restoring
+Always-on OFF / Lockdown OFF: **8 firewall instrumentation tests + 1 independent
+UID test passed again**. APK digests matched the final host-build artifacts. Controls and selected-UID blocks covered IPv4/IPv6 TCP, UDP, wire DNS
 UDP/TCP, certificate-verified TLS DNS and HTTPS DNS. Additional scenarios: existing
 TCP across activation, real VPN authorization revocation by another app, missing
 and empty rules, duplicate TUN ownership, 12 start/stop resource checks.
-[Instrumentation](evidence/normal/instrumentation.txt),
-[independent control](evidence/normal/independent-control.txt),
-[endpoint receipts](evidence/normal/endpoint.jsonl),
-[emulator properties](evidence/normal/device-properties.txt).
+[Instrumentation](evidence/normal-final/instrumentation.txt),
+[independent control](evidence/normal-final/independent-control.txt),
+[endpoint receipts](evidence/normal-final/endpoint.jsonl),
+[emulator properties](evidence/normal-final/device-properties.txt).
 All six baseline transports appeared for each address family; **zero marked
 blocked payloads** appeared in receipts. Tests use local nonstandard ports and
 HTTP/1.1 DoH; they do not prove system DNS, Private DNS, standard port rules,
