@@ -7,8 +7,8 @@ object PacketParser {
         if (length < 1 || length > data.size) return null
         fun u(i: Int) = data[i].toInt() and 255
         val version = u(0) ushr 4
-        val offset: Int
-        val protocol: Int
+        var offset: Int
+        var protocol: Int
         val destination: String
         val total: Int
         when (version) {
@@ -35,7 +35,26 @@ object PacketParser {
             }
             else -> return null
         }
-        // IPv6 extension headers are deliberately not decoded.
+        // Bounded metadata walk only. Parsing never grants network access.
+        var headers = 0
+        var extensionBytes = 0
+        while (protocol == 0 || protocol == 43 || protocol == 44 || protocol == 51 || protocol == 60) {
+            if (++headers > 8 || extensionBytes >= 2048) return Packet(version, name(protocol), destination, null, total)
+            if (offset + 2 > total) return null
+            val next = u(offset)
+            val size = when (protocol) {
+                44 -> 8
+                51 -> (u(offset + 1) + 2) * 4
+                else -> (u(offset + 1) + 1) * 8
+            }
+            if (offset + size > total) return null
+            if (protocol == 44 && (((u(offset + 2) shl 8) or u(offset + 3)) and 0xfff8) != 0)
+                return Packet(version, name(next), destination, null, total)
+            offset += size
+            extensionBytes += size
+            if (extensionBytes > 2048) return Packet(version, name(next), destination, null, total)
+            protocol = next
+        }
         val port = if ((protocol == 6 || protocol == 17) && total >= offset + 4)
             (u(offset + 2) shl 8) or u(offset + 3) else null
         return Packet(version, name(protocol), destination, port, total)

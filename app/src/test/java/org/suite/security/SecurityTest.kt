@@ -33,7 +33,7 @@ class SecurityTest {
         assertEquals("0:0:0:0:0:0:0:1", p.destination)
     }
     @Test fun ipv6ExtensionsDoNotInventTransportPorts() {
-        val bytes = ByteArray(48).apply { this[0] = 0x60; this[5] = 8; this[6] = 44 }
+        val bytes = ByteArray(48).apply { this[0] = 0x60; this[5] = 8; this[6] = 44; this[40] = 17; this[43] = 8 }
         assertNull(PacketParser.parse(bytes, 48)!!.port)
     }
     @Test fun ipv4DnsAndOptionsUseActualTransportOffset() {
@@ -60,6 +60,60 @@ class SecurityTest {
         bytes[5] = 4; bytes[6] = 58
         assertEquals("ICMPv6", PacketParser.parse(bytes, bytes.size)!!.protocol)
         assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+    }
+    private fun ipv6(payload: Int, next: Int) = ByteArray(40 + payload).apply {
+        this[0] = 0x60; this[4] = (payload ushr 8).toByte(); this[5] = payload.toByte(); this[6] = next.toByte()
+    }
+    @Test fun ipv6HopRoutingDestinationAndAuthenticationHeaders() {
+        for (extension in listOf(0, 43, 60, 51)) {
+            val bytes = ipv6(12, extension).apply { this[40] = 17; this[51] = 53 }
+            val p = PacketParser.parse(bytes, bytes.size)!!
+            assertEquals("UDP", p.protocol); assertEquals(53, p.port)
+        }
+    }
+    @Test fun ipv6ExtensionChainAndInitialFragment() {
+        val bytes = ipv6(28, 0).apply {
+            this[40] = 60; this[48] = 44; this[56] = 6; this[59] = 1
+            this[66] = 1; this[67] = -69
+        }
+        val p = PacketParser.parse(bytes, bytes.size)!!
+        assertEquals("TCP", p.protocol); assertEquals(443, p.port)
+    }
+    @Test fun ipv6NoninitialFragmentNeverInterpretsPayloadAsHeaders() {
+        val bytes = ipv6(20, 44).apply { this[40] = 60; this[43] = 8; this[48] = 17; this[59] = 53 }
+        assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+    }
+    @Test fun ipv6TruncatedExtensionsAreRejected() {
+        for (extension in listOf(0, 43, 44, 51, 60)) {
+            val bytes = ipv6(7, extension).apply { this[40] = 17 }
+            assertNull(PacketParser.parse(bytes, bytes.size))
+        }
+        val bytes = ipv6(12, 0).apply { this[41] = -1 }
+        assertNull(PacketParser.parse(bytes, bytes.size))
+    }
+    @Test fun ipv6ExtensionWalkIsBounded() {
+        val bytes = ipv6(84, 0)
+        for (i in 0 until 10) bytes[40 + i * 8] = if (i == 9) 17 else 0
+        bytes[123] = 53
+        assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+    }
+    @Test fun ipv6EspAndNoNextHeaderStayOpaque() {
+        for (next in listOf(50, 59)) {
+            val bytes = ipv6(8, next).apply { this[43] = 53 }
+            assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+        }
+    }
+    @Test fun ipv4FragmentOffsetHighBitsAndSignedLengths() {
+        val bytes = ipv4().apply { this[6] = 1 }
+        assertNull(PacketParser.parse(bytes, bytes.size)!!.port)
+        assertNull(PacketParser.parse(bytes, -1))
+        bytes[2] = -1
+        assertNull(PacketParser.parse(bytes, bytes.size))
+    }
+    @Test fun validPacketWithCorruptChecksumRemainsMetadataOnly() {
+        val bytes = ipv4().apply { this[10] = -1; this[11] = -1 }
+        assertEquals(443, PacketParser.parse(bytes, bytes.size)!!.port)
+        // The sink drops packets independently of checksum and parse outcome.
     }
     @Test fun sensitivePermissionsAreSpecific() {
         assertEquals(listOf("android.permission.CAMERA"), SecurityPolicy.sensitivePermissions(listOf("android.permission.INTERNET", "android.permission.CAMERA")))
