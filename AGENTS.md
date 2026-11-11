@@ -13,6 +13,12 @@ Goal: a small, reliable Android local-VPN firewall (Kotlin, Compose). Keep chang
 - Never read whole large files or whole directories; use grep to find the relevant lines first.
 - Device testing is done by the owner on a real phone. Ask for a short result description instead.
 
+## Principles
+1. Think before coding: state assumptions, ask if unclear, mention simpler options first.
+2. Simplicity first: only what the task needs; no extra features or abstractions.
+3. Surgical changes: touch only what is needed; match existing style; clean only your own leftovers.
+4. Goal-driven: set a checkable goal (e.g. failing test first) and loop until it passes.
+
 ## Build and check (JVM only, no device)
 - Once per environment: `scripts/bootstrap.sh` (installs JDK/SDK; needs dl.google.com, maven and gradle hosts).
 - Every change: `scripts/check.sh` (assembleDebug + unit tests + lint). CI runs the same on GitHub Actions.
