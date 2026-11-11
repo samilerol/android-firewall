@@ -1,3 +1,0 @@
-FAIL: automatic process restart not observed after SIGKILL
-No marked test payload reached endpoints in the sampled Lockdown checks; Lockdown remains enabled
-Privacy checks completed, but the recorded availability failure keeps this run FAILED.

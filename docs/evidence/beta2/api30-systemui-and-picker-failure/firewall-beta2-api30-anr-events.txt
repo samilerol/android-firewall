@@ -1,2 +1,0 @@
---------- beginning of events
-11-11 18:28:29.019   507   969 I am_anr  : [0,677,com.android.systemui,818462221,executing service com.android.systemui/.SystemUIService]
