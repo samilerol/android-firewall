@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -20,6 +21,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -80,7 +84,17 @@ class MainActivity : ComponentActivity() {
         }
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> uri?.let { model.analyze(context, it) } }
         LaunchedEffect(Unit) { model.refresh(context) }
-        Scaffold(topBar = { TopAppBar(title = { Column { Text("Security Suite"); Text("LOCAL • PRIVATE • OPEN SOURCE", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary) } }) },
+        val lifecycle = LocalLifecycleOwner.current.lifecycle
+        DisposableEffect(lifecycle) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME && FirewallStatus.state.value.active) {
+                    startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STATUS))
+                }
+            }
+            lifecycle.addObserver(observer)
+            onDispose { lifecycle.removeObserver(observer) }
+        }
+        Scaffold(topBar = { TopAppBar(title = { Column { Text("Android Firewall"); Text("LOCAL • PRIVATE • OPEN SOURCE", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary) } }) },
             bottomBar = { NavigationBar {
                 listOf("Overview", "Apps", "Activity", "APK").forEachIndexed { index, name ->
                     NavigationBarItem(selected = tab == index, onClick = { tab = index }, icon = { Text(listOf("◈", "▦", "↔", "◇")[index]) }, label = { Text(name) })
@@ -94,7 +108,15 @@ class MainActivity : ComponentActivity() {
                         item { Panel("Rootless firewall") {
                             Text(status.message, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
                             Text("${blocked.size} selected • ${status.packets} captured packets discarded • ${status.bytes} bytes")
-                            Text("Selected apps lose all IPv4/IPv6 connectivity while the VPN runs. Other apps use their normal network. Only one VPN can run at a time.")
+                            Text("Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time.")
+                            Text(when (status.lockdown) {
+                                true -> "Android Lockdown is ON: this sink-only VPN also prevents unselected apps from connecting."
+                                false -> "Android Lockdown is OFF: stopping or losing this VPN can allow traffic."
+                                null -> "Lockdown status is not available here. Verify it in Android VPN settings."
+                            }, color = MaterialTheme.colorScheme.secondary)
+                            Text("For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app.")
+                            TextButton(onClick = { runCatching { startActivity(Intent(Settings.ACTION_VPN_SETTINGS)) }
+                                .onFailure { consentMessage = "Open Android Settings → Network → VPN manually." } }) { Text("Open Android VPN settings") }
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Button(enabled = blocked.isNotEmpty() || status.active, onClick = {
                                     consentMessage = null
@@ -108,7 +130,7 @@ class MainActivity : ComponentActivity() {
                                 TextButton(onClick = { tab = 1 }) { Text("Select apps") }
                             }
                             consentMessage?.let { Text(it) }
-                            Text("Not a remote VPN or anonymity service. Stops on process death/reboot; no always-on or lockdown support.", style = MaterialTheme.typography.bodySmall)
+                            Text("No forwarding or anonymity service. Empty or missing app rules enter safety mode and block ALL apps. Lockdown with this sink-only design also blocks unselected apps.", style = MaterialTheme.typography.bodySmall)
                         } }
                         item { Panel("Application overview") {
                             Text(if (model.loading) "Reading installed apps…" else "${model.apps.size} installed packages")
@@ -126,7 +148,7 @@ class MainActivity : ComponentActivity() {
                     }
                     1 -> {
                         item { Text("App firewall & permissions", style = MaterialTheme.typography.headlineSmall) }
-                        item { Text("Switch on to block an app. Changes apply immediately if the firewall is active. Shared-UID apps may be blocked together. System app blocking can disrupt device functions.") }
+                        item { Text("Switch on to save a block rule. Updates are attempted while active; check the Overview result. An empty selection or missing package triggers ALL-app safety blocking. Shared-UID apps may be affected together. System app rules can disrupt device functions.") }
                         item { OutlinedTextField(value = query, onValueChange = { query = it }, label = { Text("Search name or package") }, modifier = Modifier.fillMaxWidth(), singleLine = true) }
                         item { Row { Checkbox(checked = showSystem, onCheckedChange = { showSystem = it }); Text("Show system apps", modifier = Modifier.padding(top = 12.dp)); TextButton(onClick = { model.refresh(context) }) { Text("Refresh") } } }
                         if (model.loading) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
@@ -136,7 +158,7 @@ class MainActivity : ComponentActivity() {
                             Panel(app.label) {
                                 Text(app.packageName, style = MaterialTheme.typography.bodySmall)
                                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text("${if (app.packageName in blocked) "Blocked" else "Allowed"} • UID ${app.uid}", modifier = Modifier.padding(top = 12.dp))
+                                    Text("${if (app.packageName in blocked) "Block rule saved" else "No block rule"} • UID ${app.uid}", modifier = Modifier.padding(top = 12.dp))
                                     Switch(checked = app.packageName in blocked, onCheckedChange = { deny ->
                                         blocked = if (deny) blocked + app.packageName else blocked - app.packageName
                                         Rules.save(context, blocked)
@@ -158,7 +180,7 @@ class MainActivity : ComponentActivity() {
                         item { Text("Blocked network activity", style = MaterialTheme.typography.headlineSmall) }
                         item { Panel("This VPN session") {
                             Text("${status.packets} packets • ${status.bytes} bytes discarded", style = MaterialTheme.typography.titleLarge)
-                            Text("Only selected apps' traffic reaching the VPN is visible. Retransmissions count separately. No attribution to individual apps, hostnames, allowed traffic, decrypted content, or full device usage. IPv6 extension headers are not decoded. Most recent 40 packet headers below.")
+                            Text("Only selected apps' traffic reaching the VPN is visible. Retransmissions count separately. No attribution to individual apps, hostnames, allowed traffic, decrypted content, or full device usage. Packet parsing is metadata only; all captured packets are discarded regardless of parsing. Most recent 40 packet headers below.")
                         } }
                         if (status.events.isEmpty()) item { Text("No captured activity yet. Enable the firewall and use a blocked app to generate traffic.") }
                         items(status.events) { packet -> Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(16.dp)) { Text("${packet.protocol} • IPv${packet.version}", color = MaterialTheme.colorScheme.primary); Text(packet.destination + (packet.port?.let { ":$it" } ?: "")); Text("${packet.bytes} bytes discarded", style = MaterialTheme.typography.bodySmall) } } }
