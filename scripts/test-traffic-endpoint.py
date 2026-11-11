@@ -29,6 +29,11 @@ try:
                 dns(response)
             else:
                 assert response == payload
+    with socket.create_connection(("127.0.0.1", 1053), 2) as s:
+        s.sendall(len(query).to_bytes(2, "big") + query)
+        stream = s.makefile("rb")
+        size = int.from_bytes(stream.read(2), "big")
+        dns(stream.read(size))
     tls = ssl.create_default_context(cafile=str(ROOT / "probe/src/main/assets/endpoint.crt"))
     with tls.wrap_socket(socket.create_connection(("127.0.0.1", 1853), 2), server_hostname="10.0.2.2") as s:
         s.sendall(len(query).to_bytes(2, "big") + query)
@@ -41,7 +46,7 @@ try:
         response.begin()
         assert response.status == 200
         dns(response.read())
-    print("PASS: local TCP, UDP, DNS, certificate-verified DoT and DoH fixture controls")
+    print("PASS: local TCP, UDP, DNS/UDP, DNS/TCP, certificate-verified DoT and DoH fixture controls")
 finally:
     server.terminate()
     try:

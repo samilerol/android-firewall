@@ -21,7 +21,7 @@ class ProbeReceiver : BroadcastReceiver() {
         Thread {
             try {
                 val host = intent.getStringExtra("host") ?: "10.0.2.2"
-                require(host == "10.0.2.2") { "Only controlled emulator endpoint permitted" }
+                require(host in setOf("10.0.2.2", "fec0::2")) { "Only controlled emulator endpoint permitted" }
                 val port = intent.getIntExtra("port", 18080)
                 require(port in setOf(18080, 18081, 1053, 1853, 18443))
                 val kind = intent.getStringExtra("kind") ?: "tcp"
@@ -39,8 +39,8 @@ class ProbeReceiver : BroadcastReceiver() {
                         if (kind == "dns") checkDns(reply.data.copyOf(reply.length))
                         else check(reply.length == payload.size && reply.data.take(payload.size) == payload.toList())
                     }
-                    "tcp", "dot", "doh" -> {
-                        val socket = if (kind == "tcp") Socket() else {
+                    "tcp", "dns-tcp", "dot", "doh" -> {
+                        val socket = if (kind == "tcp" || kind == "dns-tcp") Socket() else {
                             val certificate = context.assets.open("endpoint.crt").use {
                                 CertificateFactory.getInstance("X.509").generateCertificate(it)
                             }
@@ -56,16 +56,16 @@ class ProbeReceiver : BroadcastReceiver() {
                                 it.startHandshake()
                             }
                             val payload = when (kind) {
-                                "dot" -> dnsQuery(nonce).let { query -> byteArrayOf((query.size ushr 8).toByte(), query.size.toByte()) + query }
+                                "dot", "dns-tcp" -> dnsQuery(nonce).let { query -> byteArrayOf((query.size ushr 8).toByte(), query.size.toByte()) + query }
                                 "doh" -> dnsQuery(nonce).let { query ->
-                                    "POST /dns-query HTTP/1.1\r\nHost: 10.0.2.2\r\nContent-Type: application/dns-message\r\nContent-Length: ${query.size}\r\n\r\n".toByteArray(Charsets.US_ASCII) + query
+                                    "POST /dns-query HTTP/1.1\r\nHost: ${if (host.contains(':')) "[$host]" else host}\r\nContent-Type: application/dns-message\r\nContent-Length: ${query.size}\r\n\r\n".toByteArray(Charsets.US_ASCII) + query
                                 }
                                 else -> message
                             }
                             it.getOutputStream().write(payload)
                             val input = it.getInputStream().buffered()
                             when (kind) {
-                                "dot" -> {
+                                "dot", "dns-tcp" -> {
                                     val size = (input.read() shl 8) or input.read()
                                     check(size in 12..1024)
                                     checkDns(ByteArray(size).also { response -> java.io.DataInputStream(input).readFully(response) })
