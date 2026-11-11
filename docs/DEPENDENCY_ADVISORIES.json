@@ -1,0 +1,758 @@
+{
+  "source": "https://osv-vulnerabilities.storage.googleapis.com/Maven/all.zip",
+  "snapshot_sha256": "f779994d544de75b9a303de907d2bbe91dc7936f7ca060208f92828e207577a3",
+  "snapshot_last_modified_utc": "2026-11-10T19:48:24Z",
+  "maven_comparator_version": "3.9.9",
+  "maven_comparator_sha256": "30f015d1c1a393e19c18cd4f43532089c36d4ca328608ce3dda78b74d3d31515",
+  "advisory_record_count": 7257,
+  "component_record_count": 373,
+  "version_match_count": 62,
+  "release_runtime_match_count": 0,
+  "unsupported_ranges": [],
+  "matches": [
+    {
+      "id": "GHSA-2363-cqg2-863c",
+      "aliases": [
+        "BIT-solr-2021-33813",
+        "CVE-2021-33813"
+      ],
+      "package": "org.jdom:jdom2",
+      "version": "2.0.6",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "HIGH",
+      "summary": "XML External Entity (XXE) Injection in JDOM",
+      "url": "https://osv.dev/vulnerability/GHSA-2363-cqg2-863c"
+    },
+    {
+      "id": "GHSA-3677-xxcr-wjqv",
+      "aliases": [
+        "CVE-2024-29371"
+      ],
+      "package": "org.bitbucket.b_c:jose4j",
+      "version": "0.9.5",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "HIGH",
+      "summary": "jose4j is vulnerable to DoS via compressed JWE content",
+      "url": "https://osv.dev/vulnerability/GHSA-3677-xxcr-wjqv"
+    },
+    {
+      "id": "GHSA-389x-839f-4rhx",
+      "aliases": [
+        "CVE-2025-25193"
+      ],
+      "package": "io.netty:netty-common",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Denial of Service attack on windows app using Netty",
+      "url": "https://osv.dev/vulnerability/GHSA-389x-839f-4rhx"
+    },
+    {
+      "id": "GHSA-38f8-5428-x5cv",
+      "aliases": [
+        "CVE-2026-42585"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty vulnerable to HTTP Request Smuggling due to malformed Transfer-Encoding",
+      "url": "https://osv.dev/vulnerability/GHSA-38f8-5428-x5cv"
+    },
+    {
+      "id": "GHSA-3p8m-j85q-pgmj",
+      "aliases": [
+        "CVE-2025-58057"
+      ],
+      "package": "io.netty:netty-codec",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty's decoders vulnerable to DoS via zip bomb style attack",
+      "url": "https://osv.dev/vulnerability/GHSA-3p8m-j85q-pgmj"
+    },
+    {
+      "id": "GHSA-3qp7-7mw8-wx86",
+      "aliases": [
+        "CVE-2026-44249"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty has an IPv6 Subnet Filter Bypass via Incorrect Comparator Masking",
+      "url": "https://osv.dev/vulnerability/GHSA-3qp7-7mw8-wx86"
+    },
+    {
+      "id": "GHSA-4265-ccf5-phj5",
+      "aliases": [
+        "CVE-2024-26308"
+      ],
+      "package": "org.apache.commons:commons-compress",
+      "version": "1.21",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Apache Commons Compress: OutOfMemoryError unpacking broken Pack200 file",
+      "url": "https://osv.dev/vulnerability/GHSA-4265-ccf5-phj5"
+    },
+    {
+      "id": "GHSA-45q3-82m4-75jr",
+      "aliases": [
+        "CVE-2026-42578"
+      ],
+      "package": "io.netty:netty-handler-proxy",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "LOW",
+      "summary": "Netty has HTTP Header Injection via HttpProxyHandler Disabled Validation (Incomplete Fix CVE-2025-67735)",
+      "url": "https://osv.dev/vulnerability/GHSA-45q3-82m4-75jr"
+    },
+    {
+      "id": "GHSA-4cx2-fc23-5wg6",
+      "aliases": [
+        "CVE-2025-8916"
+      ],
+      "package": "org.bouncycastle:bcpkix-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle for Java bcpkix, bcprov, bcpkix-fips on All (API modules) allows Excessive Allocation",
+      "url": "https://osv.dev/vulnerability/GHSA-4cx2-fc23-5wg6"
+    },
+    {
+      "id": "GHSA-4g8c-wm8x-jfhw",
+      "aliases": [
+        "CVE-2025-24970"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "SslHandler doesn't correctly validate packets which can lead to native crash when using native SSLEngine",
+      "url": "https://osv.dev/vulnerability/GHSA-4g8c-wm8x-jfhw"
+    },
+    {
+      "id": "GHSA-4g9r-vxhx-9pgx",
+      "aliases": [
+        "CVE-2024-25710"
+      ],
+      "package": "org.apache.commons:commons-compress",
+      "version": "1.21",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Apache Commons Compress: Denial of service caused by an infinite loop for a corrupted DUMP file",
+      "url": "https://osv.dev/vulnerability/GHSA-4g9r-vxhx-9pgx"
+    },
+    {
+      "id": "GHSA-4h8f-2wvx-gg5w",
+      "aliases": [
+        "CVE-2024-34447"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle Java Cryptography API vulnerable to DNS poisoning",
+      "url": "https://osv.dev/vulnerability/GHSA-4h8f-2wvx-gg5w"
+    },
+    {
+      "id": "GHSA-4mp9-239f-g9hg",
+      "aliases": [
+        "CVE-2026-59898"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: WebSockets V07/V08 handshaker missing Connection/Upgrade validation",
+      "url": "https://osv.dev/vulnerability/GHSA-4mp9-239f-g9hg"
+    },
+    {
+      "id": "GHSA-558v-64gr-wgg4",
+      "aliases": [
+        "CVE-2026-59901"
+      ],
+      "package": "io.netty:netty-codec",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: [Bzip2Decoder] Infinite Loop in RLE State Machine Leads to Event-Loop Thread Hang",
+      "url": "https://osv.dev/vulnerability/GHSA-558v-64gr-wgg4"
+    },
+    {
+      "id": "GHSA-563q-j3cm-6jxm",
+      "aliases": [
+        "CVE-2026-50560"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty susceptible to HTTP/2 Reset Attack with different on-the-wire signature",
+      "url": "https://osv.dev/vulnerability/GHSA-563q-j3cm-6jxm"
+    },
+    {
+      "id": "GHSA-574f-3g2m-x479",
+      "aliases": [
+        "CVE-2025-14813"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "CRITICAL",
+      "summary": "Bouncy Castle for Java GOST 28147 CTR mode reuses keystream after 255 blocks",
+      "url": "https://osv.dev/vulnerability/GHSA-574f-3g2m-x479"
+    },
+    {
+      "id": "GHSA-57rv-r2g8-2cj3",
+      "aliases": [
+        "CVE-2026-42584"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty has HttpClientCodec response desynchronization",
+      "url": "https://osv.dev/vulnerability/GHSA-57rv-r2g8-2cj3"
+    },
+    {
+      "id": "GHSA-5jpm-x58v-624v",
+      "aliases": [
+        "CVE-2024-29025"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty's HttpPostRequestDecoder can OOM",
+      "url": "https://osv.dev/vulnerability/GHSA-5jpm-x58v-624v"
+    },
+    {
+      "id": "GHSA-5x3r-wrvg-rp6q",
+      "aliases": [
+        "CVE-2026-47244"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty HTTP/2: Advertised MAX_CONCURRENT_STREAMS are not enforced",
+      "url": "https://osv.dev/vulnerability/GHSA-5x3r-wrvg-rp6q"
+    },
+    {
+      "id": "GHSA-67mf-3cr5-8w23",
+      "aliases": [
+        "CVE-2025-8885"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle for Java on All (API modules) allows Excessive Allocation",
+      "url": "https://osv.dev/vulnerability/GHSA-67mf-3cr5-8w23"
+    },
+    {
+      "id": "GHSA-6cqp-g7gg-8hr5",
+      "aliases": [
+        "CVE-2026-56746"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: Security Control Bypass via CORS Short-Circuit Failure",
+      "url": "https://osv.dev/vulnerability/GHSA-6cqp-g7gg-8hr5"
+    },
+    {
+      "id": "GHSA-6jqx-86gh-f27w",
+      "aliases": [
+        "CVE-2026-55831"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty SPDY SETTINGS frame count materializes unbounded settings map",
+      "url": "https://osv.dev/vulnerability/GHSA-6jqx-86gh-f27w"
+    },
+    {
+      "id": "GHSA-6mjq-h674-j845",
+      "aliases": [
+        "CVE-2023-34462"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "netty-handler SniHandler 16MB allocation",
+      "url": "https://osv.dev/vulnerability/GHSA-6mjq-h674-j845"
+    },
+    {
+      "id": "GHSA-735f-pc8j-v9w8",
+      "aliases": [
+        "CVE-2024-7254"
+      ],
+      "package": "com.google.protobuf:protobuf-java",
+      "version": "3.22.3",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "protobuf-java has potential Denial of Service issue",
+      "url": "https://osv.dev/vulnerability/GHSA-735f-pc8j-v9w8"
+    },
+    {
+      "id": "GHSA-78wr-2p64-hpwj",
+      "aliases": [
+        "CVE-2024-47554"
+      ],
+      "package": "commons-io:commons-io",
+      "version": "2.13.0",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Apache Commons IO: Possible denial of service attack on untrusted input to XmlStreamReader",
+      "url": "https://osv.dev/vulnerability/GHSA-78wr-2p64-hpwj"
+    },
+    {
+      "id": "GHSA-7r82-7xv7-xcpj",
+      "aliases": [
+        "CVE-2020-13956"
+      ],
+      "package": "org.apache.httpcomponents:httpclient",
+      "version": "4.5.6",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Cross-site scripting in Apache HttpClient",
+      "url": "https://osv.dev/vulnerability/GHSA-7r82-7xv7-xcpj"
+    },
+    {
+      "id": "GHSA-84h7-rjj3-6jx4",
+      "aliases": [
+        "CVE-2025-67735"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty has a CRLF Injection vulnerability in io.netty.handler.codec.http.HttpRequestEncoder",
+      "url": "https://osv.dev/vulnerability/GHSA-84h7-rjj3-6jx4"
+    },
+    {
+      "id": "GHSA-8c42-7qj2-3j46",
+      "aliases": [
+        "CVE-2026-59903"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty Vulnerable to Cache Poisoning and Information Disclosure via CORS Vary Header Overwrite",
+      "url": "https://osv.dev/vulnerability/GHSA-8c42-7qj2-3j46"
+    },
+    {
+      "id": "GHSA-8xfc-gm6g-vgpv",
+      "aliases": [
+        "CVE-2024-29857"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle certificate parsing issues cause high CPU usage during parameter evaluation.",
+      "url": "https://osv.dev/vulnerability/GHSA-8xfc-gm6g-vgpv"
+    },
+    {
+      "id": "GHSA-93wv-jw9v-4972",
+      "aliases": [
+        "CVE-2026-56819"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: HTTP/2 decompression leaks ByteBuf reference count when the decompressor channel is already closed (Direct memory leak / OOM DoS)",
+      "url": "https://osv.dev/vulnerability/GHSA-93wv-jw9v-4972"
+    },
+    {
+      "id": "GHSA-9pwp-9qqc-pr26",
+      "aliases": [
+        "CVE-2026-8763"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "CRITICAL",
+      "summary": "Bouncy Castle: Name Constraints bypass via trailing dot in rfc822Name and URI",
+      "url": "https://osv.dev/vulnerability/GHSA-9pwp-9qqc-pr26"
+    },
+    {
+      "id": "GHSA-c2gf-v879-257j",
+      "aliases": [
+        "CVE-2026-48043"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "netty-codec-http2: ByteBuf Reference-Count Leak in DelegatingDecompressorFrameListener Leads to Memory Exhaustion",
+      "url": "https://osv.dev/vulnerability/GHSA-c2gf-v879-257j"
+    },
+    {
+      "id": "GHSA-c3fc-8qff-9hwx",
+      "aliases": [
+        "CVE-2026-0636"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle has an LDAP injection",
+      "url": "https://osv.dev/vulnerability/GHSA-c3fc-8qff-9hwx"
+    },
+    {
+      "id": "GHSA-c4c3-7fpv-j4q5",
+      "aliases": [
+        "CVE-2026-75595"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "CRITICAL",
+      "summary": "Netty: SNI Routing Bypass via Fragmented TLS ClientHello Causing Fallback to Default SslContext",
+      "url": "https://osv.dev/vulnerability/GHSA-c4c3-7fpv-j4q5"
+    },
+    {
+      "id": "GHSA-c653-97m9-rcg9",
+      "aliases": [
+        "CVE-2026-50010"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: Wrapping plain trust manager silently disables hostname verification",
+      "url": "https://osv.dev/vulnerability/GHSA-c653-97m9-rcg9"
+    },
+    {
+      "id": "GHSA-c69g-56f8-xwqj",
+      "aliases": [
+        "CVE-2026-59900"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: [codec-http2] Lack of Host Header Deduplication in HTTP/2→HTTP/1.x Translation Leads to Request Routing Bypass",
+      "url": "https://osv.dev/vulnerability/GHSA-c69g-56f8-xwqj"
+    },
+    {
+      "id": "GHSA-f6hv-jmp6-3vwv",
+      "aliases": [
+        "CVE-2026-42587"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: HttpContentDecompressor maxAllocation bypass when Content-Encoding set to br/zstd/snappy leads to decompression bomb DoS",
+      "url": "https://osv.dev/vulnerability/GHSA-f6hv-jmp6-3vwv"
+    },
+    {
+      "id": "GHSA-f6hv-jmp6-3vwv",
+      "aliases": [
+        "CVE-2026-42587"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: HttpContentDecompressor maxAllocation bypass when Content-Encoding set to br/zstd/snappy leads to decompression bomb DoS",
+      "url": "https://osv.dev/vulnerability/GHSA-f6hv-jmp6-3vwv"
+    },
+    {
+      "id": "GHSA-fccg-mwvh-qqg4",
+      "aliases": [
+        "CVE-2026-75596"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: Fragmented ClientHello records trigger quadratic pre-handshake reassembly in default SNI parsing",
+      "url": "https://osv.dev/vulnerability/GHSA-fccg-mwvh-qqg4"
+    },
+    {
+      "id": "GHSA-fghv-69vj-qj49",
+      "aliases": [
+        "CVE-2025-58056"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "LOW",
+      "summary": "Netty vulnerable to request smuggling due to incorrect parsing of chunk extensions",
+      "url": "https://osv.dev/vulnerability/GHSA-fghv-69vj-qj49"
+    },
+    {
+      "id": "GHSA-gcjf-9mgh-3p7g",
+      "aliases": [
+        "CVE-2026-59921"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: CRLF Injection via Multipart Filename in Netty HttpPostRequestEncoder",
+      "url": "https://osv.dev/vulnerability/GHSA-gcjf-9mgh-3p7g"
+    },
+    {
+      "id": "GHSA-hvcg-qmg6-jm4c",
+      "aliases": [
+        "CVE-2026-50020"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: HttpObjectDecoder skips arbitrary initial control characters when only initial CRLF characters are permitted",
+      "url": "https://osv.dev/vulnerability/GHSA-hvcg-qmg6-jm4c"
+    },
+    {
+      "id": "GHSA-jppx-w49h-x2qq",
+      "aliases": [
+        "CVE-2026-56745"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: [SpdyHttpDecoder] ByteBuf Reference Leak on RST_STREAM Leads to Native Memory Exhaustion",
+      "url": "https://osv.dev/vulnerability/GHSA-jppx-w49h-x2qq"
+    },
+    {
+      "id": "GHSA-m44j-cfrm-g8qc",
+      "aliases": [
+        "CVE-2024-30172"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle crafted signature and public key can be used to trigger an infinite loop",
+      "url": "https://osv.dev/vulnerability/GHSA-m44j-cfrm-g8qc"
+    },
+    {
+      "id": "GHSA-m4cv-j2px-7723",
+      "aliases": [
+        "CVE-2026-42580"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty vulnerable to HTTP Request Smuggling due to incorrect chunk size parsing",
+      "url": "https://osv.dev/vulnerability/GHSA-m4cv-j2px-7723"
+    },
+    {
+      "id": "GHSA-mj4r-2hfc-f8p6",
+      "aliases": [
+        "CVE-2026-42583"
+      ],
+      "package": "io.netty:netty-codec",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty Lz4FrameDecoder is vulnerable to resource exhaustion ",
+      "url": "https://osv.dev/vulnerability/GHSA-mj4r-2hfc-f8p6"
+    },
+    {
+      "id": "GHSA-mvh2-crg5-v77c",
+      "aliases": [
+        "CVE-2026-55833"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty SPDY zlib header block continues decoded expansion after maxHeaderSize truncation",
+      "url": "https://osv.dev/vulnerability/GHSA-mvh2-crg5-v77c"
+    },
+    {
+      "id": "GHSA-p93r-85wp-75v3",
+      "aliases": [
+        "CVE-2026-5598"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Bouncy Castle Has Covert Timing Channel Vulnerability",
+      "url": "https://osv.dev/vulnerability/GHSA-p93r-85wp-75v3"
+    },
+    {
+      "id": "GHSA-prj3-ccx8-p6x4",
+      "aliases": [
+        "CVE-2025-55163"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty affected by MadeYouReset HTTP/2 DDoS vulnerability",
+      "url": "https://osv.dev/vulnerability/GHSA-prj3-ccx8-p6x4"
+    },
+    {
+      "id": "GHSA-pwqr-wmgm-9rr8",
+      "aliases": [
+        "CVE-2026-33870"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: HTTP Request Smuggling via Chunked Extension Quoted-String Parsing",
+      "url": "https://osv.dev/vulnerability/GHSA-pwqr-wmgm-9rr8"
+    },
+    {
+      "id": "GHSA-q4f6-jm68-57ww",
+      "aliases": [
+        "CVE-2026-59899"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: [HttpContentEncoder] Unbounded Per-Connection Queue Growth via HTTP/1.1 Pipelining Leads to Denial of Service",
+      "url": "https://osv.dev/vulnerability/GHSA-q4f6-jm68-57ww"
+    },
+    {
+      "id": "GHSA-qp49-qgx5-5m26",
+      "aliases": [
+        "CVE-2026-13506"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Bouncy Castle: Lazy ASN.1 sequence forcing resets nesting-depth guard",
+      "url": "https://osv.dev/vulnerability/GHSA-qp49-qgx5-5m26"
+    },
+    {
+      "id": "GHSA-r937-wjx7-w2jp",
+      "aliases": [
+        "CVE-2026-53914"
+      ],
+      "package": "org.jetbrains.kotlin:kotlin-gradle-plugin",
+      "version": "2.0.21",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "JetBrains Kotlin: Unsafe Deserialization in Kotlin Build Cache Enables Code Execution",
+      "url": "https://osv.dev/vulnerability/GHSA-r937-wjx7-w2jp"
+    },
+    {
+      "id": "GHSA-v435-xc8x-wvr9",
+      "aliases": [
+        "CVE-2024-30171"
+      ],
+      "package": "org.bouncycastle:bcprov-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle affected by timing side-channel for RSA key exchange (\"The Marvin Attack\")",
+      "url": "https://osv.dev/vulnerability/GHSA-v435-xc8x-wvr9"
+    },
+    {
+      "id": "GHSA-v8h7-rr48-vmmv",
+      "aliases": [
+        "CVE-2026-41417"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty: Start-Line Injection in DefaultHttpRequest.setUri() Allows HTTP Request Smuggling and RTSP Request Injection",
+      "url": "https://osv.dev/vulnerability/GHSA-v8h7-rr48-vmmv"
+    },
+    {
+      "id": "GHSA-w9fj-cfpg-grvv",
+      "aliases": [
+        "CVE-2026-33871"
+      ],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty HTTP/2 CONTINUATION Frame Flood DoS via Zero-Byte Frame Bypass",
+      "url": "https://osv.dev/vulnerability/GHSA-w9fj-cfpg-grvv"
+    },
+    {
+      "id": "GHSA-wg6q-6289-32hp",
+      "aliases": [
+        "CVE-2026-5588"
+      ],
+      "package": "org.bouncycastle:bcpkix-jdk18on",
+      "version": "1.77",
+      "observed_scope": "build/plugin or metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Bouncy Castle Crypto Package For Java: Use of a Broken or Risky Cryptographic Algorithm vulnerability in bcpkix modules",
+      "url": "https://osv.dev/vulnerability/GHSA-wg6q-6289-32hp"
+    },
+    {
+      "id": "GHSA-x4gw-5cx5-pgmh",
+      "aliases": [
+        "CVE-2026-45416"
+      ],
+      "package": "io.netty:netty-handler",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Netty: SNI handler pre-allocates up to 16 MiB from nine attacker bytes",
+      "url": "https://osv.dev/vulnerability/GHSA-x4gw-5cx5-pgmh"
+    },
+    {
+      "id": "GHSA-xpw8-rcwv-8f8p",
+      "aliases": [],
+      "package": "io.netty:netty-codec-http2",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "io.netty:netty-codec-http2 vulnerable to HTTP/2 Rapid Reset Attack",
+      "url": "https://osv.dev/vulnerability/GHSA-xpw8-rcwv-8f8p"
+    },
+    {
+      "id": "GHSA-xq3w-v528-46rv",
+      "aliases": [
+        "CVE-2024-47535"
+      ],
+      "package": "io.netty:netty-common",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Denial of Service attack on windows app using netty",
+      "url": "https://osv.dev/vulnerability/GHSA-xq3w-v528-46rv"
+    },
+    {
+      "id": "GHSA-xxph-c9ww-hj94",
+      "aliases": [
+        "CVE-2026-102554"
+      ],
+      "package": "com.google.guava:guava",
+      "version": "32.0.1-jre",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "HIGH",
+      "summary": "Google Guava: CompactHashMap/CompactHashSet/MapMakerInternalMap deserialization triggers uncontrolled memory allocation",
+      "url": "https://osv.dev/vulnerability/GHSA-xxph-c9ww-hj94"
+    },
+    {
+      "id": "GHSA-xxqh-mfjm-7mv9",
+      "aliases": [
+        "CVE-2026-42581"
+      ],
+      "package": "io.netty:netty-codec-http",
+      "version": "4.1.93.Final",
+      "observed_scope": "build/metadata",
+      "upstream_severity": "MODERATE",
+      "summary": "Netty HTTP/1.0 TE+CL Coexistence Bypasses Smuggling Sanitization",
+      "url": "https://osv.dev/vulnerability/GHSA-xxqh-mfjm-7mv9"
+    }
+  ],
+  "limits": "Maven metadata/version matching only. Native/Android/JDK vulnerabilities and reachability are not established. Aliases can duplicate upstream vulnerabilities."
+}
