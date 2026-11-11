@@ -1,0 +1,127 @@
+package org.suite.security
+
+import android.content.BroadcastReceiver
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.os.ParcelFileDescriptor
+import android.os.SystemClock
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
+/** Requires scripts/traffic-endpoint.py and the separately installed :probe APK. */
+@RunWith(AndroidJUnit4::class)
+class FirewallIntegrationTest {
+    private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
+    private val context get() = instrumentation.targetContext
+    private var saved = emptySet<String>()
+    private var phase = "control"
+    private val probePackage = "org.suite.firewallprobe"
+
+    @Before fun prepare() {
+        saved = Rules.blocked(context)
+        shell("appops set ${context.packageName} ACTIVATE_VPN allow")
+        stop()
+    }
+    @After fun restore() {
+        stop()
+        Rules.save(context, saved)
+    }
+    private fun shell(command: String) {
+        ParcelFileDescriptor.AutoCloseInputStream(instrumentation.uiAutomation.executeShellCommand(command)).use { it.readBytes() }
+    }
+    private fun await(message: String, condition: () -> Boolean) {
+        val until = SystemClock.elapsedRealtime() + 8000
+        while (!condition() && SystemClock.elapsedRealtime() < until) SystemClock.sleep(50)
+        assertTrue(message, condition())
+    }
+    private fun start(packages: Set<String>) {
+        Rules.save(context, packages)
+        context.startForegroundService(Intent(context, FirewallService::class.java))
+        await("VPN did not become active") { FirewallStatus.state.value.active }
+    }
+    private fun stop() {
+        context.stopService(Intent(context, FirewallService::class.java))
+        await("VPN did not stop") { !FirewallStatus.state.value.active }
+        SystemClock.sleep(600) // let old reader release its duplicated descriptor
+    }
+    private fun probe(kind: String, port: Int): Pair<Int, String?> {
+        val latch = CountDownLatch(1)
+        var result = -1 to "No probe response"
+        val intent = Intent().setComponent(ComponentName(probePackage, "$probePackage.ProbeReceiver"))
+            .putExtra("kind", kind).putExtra("port", port)
+            .putExtra("nonce", "$phase-$kind-${SystemClock.elapsedRealtime()}")
+        context.sendOrderedBroadcast(intent, null, object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                result = resultCode to resultData
+                latch.countDown()
+            }
+        }, null, -1, null, null)
+        assertTrue("Probe did not respond: install :probe and start endpoint", latch.await(8, TimeUnit.SECONDS))
+        // An exception caught inside the fixture is 0; a missing receiver must never count as blocking.
+        assertTrue("Missing/unauthorized test fixture: $result", result.first in 0..1)
+        return result
+    }
+    @Test fun selectedAndUnselectedUidTrafficWithRealProtocols() {
+        val cases = listOf("tcp" to 18080, "udp" to 18081, "dns" to 1053, "dot" to 1853, "doh" to 18443)
+        for ((kind, port) in cases) {
+            val result = probe(kind, port)
+            assertEquals("$kind baseline failed: $result", 1, result.first)
+        }
+        start(setOf(probePackage))
+        assertFalse(FirewallStatus.state.value.quarantine)
+        phase = "blocked"
+        for ((kind, port) in cases) {
+            val result = probe(kind, port)
+            assertEquals("$kind escaped selected-UID sink", 0, result.first)
+            assertTrue("Unexpected fixture failure: $result", result.second in setOf("SocketTimeoutException", "ConnectException", "SocketException"))
+        }
+        await("No captured selected traffic") { FirewallStatus.state.value.packets > 0 }
+        phase = "control"
+        // Switch the VPN to another installed UID. The probe should again reach endpoints.
+        Rules.save(context, setOf("com.android.settings"))
+        context.startForegroundService(Intent(context, FirewallService::class.java))
+        await("Replacement did not reset counters") { FirewallStatus.state.value.packets == 0L }
+        for ((kind, port) in cases) assertEquals("$kind unselected probe failed", 1, probe(kind, port).first)
+        stop()
+        assertEquals(1, probe("tcp", 18080).first)
+    }
+    @Test fun emptyAndMissingSelectionsCaptureAllTraffic() {
+        assertEquals("Endpoint baseline required", 1, probe("tcp", 18080).first)
+        for (selection in listOf(emptySet(), setOf("org.suite.missing.package"))) {
+            start(selection)
+            await("Safety mode not enabled") { FirewallStatus.state.value.quarantine }
+            phase = "blocked"
+            assertEquals("Safety mode allowed traffic", 0, probe("tcp", 18080).first)
+            phase = "control"
+            stop()
+        }
+    }
+    @Test fun readerDuplicateDoesNotOwnOriginalDescriptor() {
+        val pipe = ParcelFileDescriptor.createPipe()
+        pipe[0].use { original ->
+            val reader = ParcelFileDescriptor.dup(original.fileDescriptor)
+            pipe[1].close()
+            ParcelFileDescriptor.AutoCloseInputStream(reader).use { assertEquals(-1, it.read()) }
+            assertTrue("Reader EOF closed original descriptor", original.fileDescriptor.valid())
+        }
+    }
+    @Test fun repeatedRestartsAndStopReleaseReadersAndDescriptors() {
+        val before = java.io.File("/proc/self/fd").list().orEmpty().size
+        repeat(12) {
+            start(setOf(probePackage))
+            assertTrue(FirewallStatus.state.value.active)
+            stop()
+        }
+        val after = java.io.File("/proc/self/fd").list().orEmpty().size
+        assertTrue("FD growth: $before -> $after", after <= before + 5)
+        await("Leaked reader thread") { Thread.getAllStackTraces().keys.none { it.name == "firewall-packets" && it.isAlive } }
+    }
+}
