@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
         val lifecycle = LocalLifecycleOwner.current.lifecycle
         DisposableEffect(lifecycle) {
             val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME && FirewallStatus.state.value.active) {
+                if (event == Lifecycle.Event.ON_RESUME && (FirewallStatus.state.value.active || FirewallStatus.state.value.starting)) {
                     startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STATUS))
                 }
             }
@@ -118,15 +118,15 @@ class MainActivity : ComponentActivity() {
                             TextButton(onClick = { runCatching { startActivity(Intent(Settings.ACTION_VPN_SETTINGS)) }
                                 .onFailure { consentMessage = "Open Android Settings → Network → VPN manually." } }) { Text("Open Android VPN settings") }
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                Button(enabled = blocked.isNotEmpty() || status.active, onClick = {
+                                Button(enabled = blocked.isNotEmpty() || status.active || status.starting, onClick = {
                                     consentMessage = null
-                                    if (status.active) startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STOP))
+                                    if (status.active || status.starting) startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STOP))
                                     else {
                                         if (Build.VERSION.SDK_INT >= 33) notifications.launch(Manifest.permission.POST_NOTIFICATIONS)
                                         val intent = VpnService.prepare(this@MainActivity)
                                         if (intent != null) vpnConsent.launch(intent) else startFirewall()
                                     }
-                                }) { Text(if (status.active) "Stop firewall" else "Enable firewall") }
+                                }) { Text(if (status.active || status.starting) "Stop firewall" else "Start best-effort blocking") }
                                 TextButton(onClick = { tab = 1 }) { Text("Select apps") }
                             }
                             consentMessage?.let { Text(it) }
@@ -162,7 +162,7 @@ class MainActivity : ComponentActivity() {
                                     Switch(checked = app.packageName in blocked, onCheckedChange = { deny ->
                                         blocked = if (deny) blocked + app.packageName else blocked - app.packageName
                                         Rules.save(context, blocked)
-                                        if (status.active) startFirewall()
+                                        if (status.active || status.starting) startFirewall()
                                     })
                                 }
                                 val sensitive = SecurityPolicy.sensitivePermissions(app.permissions)

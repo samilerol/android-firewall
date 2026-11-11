@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -28,6 +29,7 @@ class FirewallIntegrationTest {
     @Before fun prepare() {
         saved = Rules.blocked(context)
         shell("appops set ${context.packageName} ACTIVATE_VPN allow")
+        assertNull("VPN authorization could not be prepared", VpnService.prepare(context))
         stop()
     }
     @After fun restore() {
@@ -37,25 +39,31 @@ class FirewallIntegrationTest {
     private fun shell(command: String) {
         ParcelFileDescriptor.AutoCloseInputStream(instrumentation.uiAutomation.executeShellCommand(command)).use { it.readBytes() }
     }
-    private fun await(message: String, condition: () -> Boolean) {
-        val until = SystemClock.elapsedRealtime() + 8000
+    private fun await(message: String, timeoutMs: Long = 8000, condition: () -> Boolean) {
+        val until = SystemClock.elapsedRealtime() + timeoutMs
         while (!condition() && SystemClock.elapsedRealtime() < until) SystemClock.sleep(50)
-        assertTrue(message, condition())
+        if (!condition()) {
+            Thread.getAllStackTraces().filterKeys { it.name == "main" || it.name == "firewall-packets" }.forEach { (thread, trace) ->
+                android.util.Log.e("FirewallValidation", "${thread.name}: ${trace.joinToString("\n")}")
+            }
+        }
+        assertTrue("$message: ${FirewallStatus.state.value}", condition())
     }
     private fun start(packages: Set<String>) {
         Rules.save(context, packages)
         context.startForegroundService(Intent(context, FirewallService::class.java))
-        await("VPN did not become active") { FirewallStatus.state.value.active }
+        await("VPN did not become active", 60000) { FirewallStatus.state.value.active }
     }
     private fun stop() {
-        context.stopService(Intent(context, FirewallService::class.java))
-        await("VPN did not stop") { !FirewallStatus.state.value.active }
+        // Android binds an established VpnService; stopService alone does not unbind it.
+        context.startService(Intent(context, FirewallService::class.java).setAction(FirewallService.STOP))
+        await("VPN did not stop") { !FirewallStatus.state.value.active && !FirewallStatus.state.value.starting }
         SystemClock.sleep(600) // let old reader release its duplicated descriptor
     }
     private fun probe(kind: String, port: Int): Pair<Int, String?> {
         val latch = CountDownLatch(1)
         var result = -1 to "No probe response"
-        val intent = Intent().setComponent(ComponentName(probePackage, "$probePackage.ProbeReceiver"))
+        val intent = Intent().addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES or Intent.FLAG_RECEIVER_FOREGROUND).setComponent(ComponentName(probePackage, "$probePackage.ProbeReceiver"))
             .putExtra("kind", kind).putExtra("port", port)
             .putExtra("nonce", "$phase-$kind-${SystemClock.elapsedRealtime()}")
         context.sendOrderedBroadcast(intent, null, object : BroadcastReceiver() {
@@ -64,13 +72,13 @@ class FirewallIntegrationTest {
                 latch.countDown()
             }
         }, null, -1, null, null)
-        assertTrue("Probe did not respond: install :probe and start endpoint", latch.await(8, TimeUnit.SECONDS))
+        assertTrue("Probe did not respond: install :probe and start endpoint", latch.await(30, TimeUnit.SECONDS))
         // An exception caught inside the fixture is 0; a missing receiver must never count as blocking.
         assertTrue("Missing/unauthorized test fixture: $result", result.first in 0..1)
         return result
     }
     @Test fun selectedAndUnselectedUidTrafficWithRealProtocols() {
-        val cases = listOf("tcp" to 18080, "udp" to 18081, "dns" to 1053, "dot" to 1853, "doh" to 18443)
+        val cases = listOf("tcp" to 18080, "udp" to 18081, "dns" to 1053, "dns-tcp" to 1053, "dot" to 1853, "doh" to 18443)
         for ((kind, port) in cases) {
             val result = probe(kind, port)
             assertEquals("$kind baseline failed: $result", 1, result.first)
@@ -99,7 +107,14 @@ class FirewallIntegrationTest {
             start(selection)
             await("Safety mode not enabled") { FirewallStatus.state.value.quarantine }
             phase = "blocked"
-            assertEquals("Safety mode allowed traffic", 0, probe("tcp", 18080).first)
+            val result = probe("tcp", 18080)
+            if (result.first != 0) {
+                val details = listOf("dumpsys connectivity", "ip rule", "ip route show table all", "dumpsys package org.suite.firewallprobe").joinToString("\n") { command ->
+                    command + "\n" + ParcelFileDescriptor.AutoCloseInputStream(instrumentation.uiAutomation.executeShellCommand(command)).use { it.readBytes().toString(Charsets.UTF_8) }
+                }
+                java.io.File(context.cacheDir, "vpn-failure.txt").writeText(details)
+            }
+            assertEquals("Safety mode allowed traffic", 0, result.first)
             phase = "control"
             stop()
         }
