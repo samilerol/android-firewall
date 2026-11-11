@@ -180,7 +180,7 @@ class MainActivity : ComponentActivity() {
                         item { Text("Blocked network activity", style = MaterialTheme.typography.headlineSmall) }
                         item { Panel("This VPN session") {
                             Text("${status.packets} packets • ${status.bytes} bytes discarded", style = MaterialTheme.typography.titleLarge)
-                            Text("Only selected apps' traffic reaching the VPN is visible. Retransmissions count separately. No attribution to individual apps, hostnames, allowed traffic, decrypted content, or full device usage. Packet parsing is metadata only; all captured packets are discarded regardless of parsing. Most recent 40 packet headers below.")
+                            Text("Only selected apps' traffic reaching the VPN is visible. Retransmissions count separately. No attribution to individual apps, hostnames, allowed traffic, decrypted content, or full device usage. Packet parsing is metadata only; all captured packets are discarded regardless of parsing. Most recent 40 sampled packet headers below (at most 20 samples/second).")
                         } }
                         if (status.events.isEmpty()) item { Text("No captured activity yet. Enable the firewall and use a blocked app to generate traffic.") }
                         items(status.events) { packet -> Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(16.dp)) { Text("${packet.protocol} • IPv${packet.version}", color = MaterialTheme.colorScheme.primary); Text(packet.destination + (packet.port?.let { ":$it" } ?: "")); Text("${packet.bytes} bytes discarded", style = MaterialTheme.typography.bodySmall) } } }

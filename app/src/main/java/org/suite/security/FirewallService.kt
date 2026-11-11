@@ -121,22 +121,33 @@ class FirewallService : VpnService() {
                 var bytes = 0L
                 val events = ArrayDeque<Packet>()
                 var lastPublish = 0L
+                var nextMetadataAt = 0L
                 while (owner.running.get()) {
+                    var capturedSize = 0
                     if (Os.poll(arrayOf(poll), 500) > 0 && owner.running.get()) {
                         val errors = OsConstants.POLLERR or OsConstants.POLLHUP or OsConstants.POLLNVAL
-                        if (poll.revents.toInt() and errors != 0) throw EOFException("TUN closed")
+                        if (poll.revents.toInt() and errors != 0) {
+                            throw EOFException("TUN closed")
+                        }
                         if (poll.revents.toInt() and OsConstants.POLLIN != 0) {
                             val size = input.read(buffer)
-                            if (size <= 0) throw EOFException("TUN EOF")
+                            if (size <= 0) {
+                                throw EOFException("TUN EOF")
+                            }
                             packets++
                             bytes += size
-                            PacketParser.parse(buffer, size)?.let { packet ->
-                                if (events.size >= 40) events.removeLast()
-                                events.addFirst(packet)
-                            }
+                            capturedSize = size
                         }
                     }
                     val now = android.os.SystemClock.elapsedRealtime()
+                    // Bound metadata allocations under packet floods; every read is still discarded/counted.
+                    if (capturedSize > 0 && now >= nextMetadataAt) {
+                        PacketParser.parse(buffer, capturedSize)?.let { packet ->
+                            if (events.size >= 40) events.removeLast()
+                            events.addFirst(packet)
+                        }
+                        nextMetadataAt = now + 50
+                    }
                     if (now - lastPublish >= 500) {
                         synchronized(lock) {
                             if (session === owner && owner.running.get()) {
