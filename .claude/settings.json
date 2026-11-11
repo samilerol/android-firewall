@@ -1,0 +1,66 @@
+{
+  "model": "sonnet",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(./scripts/check.sh:*)",
+      "Bash(bash -n scripts/*.sh)",
+      "Bash(python3 scripts/test-traffic-endpoint.py)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./build/**)",
+      "Read(./coverage/**)",
+      "Read(./**/*.log)",
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Read(./**/build/**)",
+      "Read(./.gradle/**)",
+      "Read(./.kotlin/**)",
+      "Read(./**/gradle.lockfile)",
+      "Read(./gradle/verification-metadata.xml)",
+      "Read(./docs/evidence/**)",
+      "Read(./docs/DEPENDENCY_ADVISORIES.json)",
+      "Read(./docs/DEPENDENCY_LICENSES.csv)",
+      "Read(./**/*.apk)",
+      "Read(./local.properties)"
+    ],
+    "ask": [
+      "Bash(./scripts/device-check.sh:*)",
+      "Bash(./scripts/lockdown-check.sh:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/protect_files.py\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/format_file.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -7,3 +7,5 @@ local.properties
 *.apk
 __pycache__/
 *.pyc
+CLAUDE.local.md
+.claude/settings.local.json
