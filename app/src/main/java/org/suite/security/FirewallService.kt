@@ -40,6 +40,7 @@ class FirewallService : VpnService() {
     }
     private val lock = Any()
     private var session: Session? = null
+    private var generation = 0L
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == STOP) {
@@ -54,6 +55,7 @@ class FirewallService : VpnService() {
         }
         try {
             showNotification()
+            val attempt = synchronized(lock) { generation }
             val blocked = Rules.blocked(this) - packageName
             // Resolve the complete set first. Missing rules must never silently become bypasses.
             val installed = blocked.filter { name ->
@@ -73,6 +75,10 @@ class FirewallService : VpnService() {
             val descriptor = builder.establish() ?: error("VPN permission is unavailable")
             val next = Session(descriptor)
             synchronized(lock) {
+                if (attempt != generation) {
+                    descriptor.close()
+                    return START_NOT_STICKY // Revoke/destroy won the establishment race.
+                }
                 val previous = session
                 session = next
                 previous?.let { close(it) }
@@ -159,6 +165,7 @@ class FirewallService : VpnService() {
         owner.worker?.interrupt()
     }
     private fun shutdown(message: String) = synchronized(lock) {
+        generation++
         session?.let { close(it) }
         session = null
         FirewallStatus.mutable.value = protection(FirewallState(message = message))
