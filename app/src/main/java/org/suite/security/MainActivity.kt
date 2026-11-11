@@ -105,13 +105,13 @@ class MainActivity : ComponentActivity() {
                 when (tab) {
                     0 -> {
                         item { Text("Your device, under your control", style = MaterialTheme.typography.headlineMedium) }
-                        item { Panel("Rootless firewall") {
+                        item { Panel("Experimental rootless firewall") {
                             Text(status.message, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
                             Text("${blocked.size} selected • ${status.packets} captured packets discarded • ${status.bytes} bytes")
                             Text("Selected apps are routed to a local packet sink. Without Android Lockdown, other apps use their normal network. Only one VPN can run at a time.")
                             Text(when (status.lockdown) {
-                                true -> "Android Lockdown is ON: this sink-only VPN also prevents unselected apps from connecting."
-                                false -> "Android Lockdown is OFF: stopping or losing this VPN can allow traffic."
+                                true -> "Last service check: Android Lockdown was ON: this sink-only VPN also prevents unselected apps from connecting."
+                                false -> "Last service check: Android Lockdown was OFF: stopping or losing this VPN can allow traffic."
                                 null -> "Lockdown status is not available here. Verify it in Android VPN settings."
                             }, color = MaterialTheme.colorScheme.secondary)
                             Text("For protection during crashes and reboot, enable BOTH Always-on VPN and Block connections without VPN in Android settings. These settings cannot be enabled by this app.")
@@ -149,6 +149,18 @@ class MainActivity : ComponentActivity() {
                     1 -> {
                         item { Text("App firewall & permissions", style = MaterialTheme.typography.headlineSmall) }
                         item { Text("Switch on to save a block rule. Updates are attempted while active; check the Overview result. An empty selection or missing package triggers ALL-app safety blocking. Shared-UID apps may be affected together. System app rules can disrupt device functions.") }
+                        if (!model.loading && model.error == null && model.apps.isNotEmpty()) {
+                            val missing = blocked - model.apps.map { it.packageName }.toSet()
+                            if (missing.isNotEmpty()) item { Panel("Unavailable saved applications") {
+                                Text("These saved packages are unavailable. Safety mode blocks all apps until valid rules are applied.")
+                                missing.sorted().forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
+                                TextButton(onClick = {
+                                    blocked = blocked - missing
+                                    Rules.save(context, blocked)
+                                    if (status.active || status.starting) startFirewall()
+                                }) { Text("Remove unavailable rules") }
+                            } }
+                        }
                         item { OutlinedTextField(value = query, onValueChange = { query = it }, label = { Text("Search name or package") }, modifier = Modifier.fillMaxWidth(), singleLine = true) }
                         item { Row { Checkbox(checked = showSystem, onCheckedChange = { showSystem = it }); Text("Show system apps", modifier = Modifier.padding(top = 12.dp)); TextButton(onClick = { model.refresh(context) }) { Text("Refresh") } } }
                         if (model.loading) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
