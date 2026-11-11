@@ -4,8 +4,10 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
 import android.net.VpnService
 import android.net.ConnectivityManager
 import android.net.Network
@@ -32,15 +34,12 @@ data class FirewallState(
     val events: List<Packet> = emptyList(), val message: String = "Firewall is off",
     val monitoring: Boolean = false, val quarantine: Boolean = false, val starting: Boolean = false,
     val alwaysOn: Boolean? = null, val lockdown: Boolean? = null,
-    val appliedPackages: Set<String> = emptySet()
+    val appliedPackages: Set<String> = emptySet(), val running: Boolean = false,
+    val appliedMode: FirewallMode? = null, val retryRequired: Boolean = false
 )
 object FirewallStatus {
     internal val mutable = MutableStateFlow(FirewallState())
     val state = mutable.asStateFlow()
-}
-object Rules {
-    fun blocked(context: Context): Set<String> = context.getSharedPreferences("firewall", Context.MODE_PRIVATE).getStringSet("blocked", emptySet())!!.toSet()
-    fun save(context: Context, packages: Set<String>) { context.getSharedPreferences("firewall", Context.MODE_PRIVATE).edit().putStringSet("blocked", packages.toSet()).apply() }
 }
 
 /** Sink only. Process-death protection requires Android Always-on AND Lockdown. */
@@ -56,6 +55,20 @@ class FirewallService : VpnService() {
     private val available = mutableSetOf<Network>()
     private val links = mutableMapOf<Network, LinkProperties>()
     private var observing = false
+    private var observingPackages = false
+    private val packageChanges = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (!FirewallStatus.state.value.running) return
+            val rules = Rules.load(context)
+            if (rules.mode != FirewallMode.SELECTED_APPS || intent.data?.schemeSpecificPart !in rules.packages) return
+            runCatching { startForegroundService(Intent(context, FirewallService::class.java)) }.onFailure {
+                synchronized(lock) {
+                    FirewallStatus.mutable.value = FirewallStatus.mutable.value.copy(retryRequired = true,
+                        message = "Package changed; rules could not be refreshed. New UID blocking is unconfirmed. Retry and verify Lockdown.")
+                }
+            }
+        }
+    }
     private val callback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) { available.add(network); routingReady() }
         override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
@@ -75,6 +88,17 @@ class FirewallService : VpnService() {
     }
     override fun onCreate() {
         super.onCreate()
+        runCatching {
+            val filter = IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
+                addDataScheme("package")
+            }
+            if (Build.VERSION.SDK_INT >= 33) registerReceiver(packageChanges, filter, RECEIVER_NOT_EXPORTED)
+            else @Suppress("DEPRECATION") registerReceiver(packageChanges, filter)
+            observingPackages = true
+        }
         try {
             val request = NetworkRequest.Builder().removeCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
                 .addTransportType(NetworkCapabilities.TRANSPORT_VPN).build()
@@ -101,7 +125,7 @@ class FirewallService : VpnService() {
         owner.network = network
         val old = FirewallStatus.mutable.value
         FirewallStatus.mutable.value = old.copy(active = true, starting = false,
-            message = if (old.monitoring) owner.readyMessage else "Android VPN routing observed; monitoring unavailable. Verify Lockdown.")
+            message = if (old.retryRequired) old.message else if (old.monitoring) owner.readyMessage else "Android VPN routing observed; monitoring unavailable. Verify Lockdown.")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -111,20 +135,26 @@ class FirewallService : VpnService() {
             stopSelf()
             return START_NOT_STICKY
         }
-        if (intent?.action == STATUS && session != null) {
+        if (intent?.action == STATUS) {
             synchronized(lock) { FirewallStatus.mutable.value = protection(FirewallStatus.mutable.value) }
+            if (!FirewallStatus.state.value.running) {
+                stopSelf()
+                return START_NOT_STICKY
+            }
             return START_STICKY
         }
         try {
             showNotification()
+            synchronized(lock) { FirewallStatus.mutable.value = protection(FirewallStatus.mutable.value.copy(running = true)) }
             val attempt = synchronized(lock) { generation }
-            val blocked = Rules.blocked(this) - packageName
+            val rules = Rules.load(this)
+            val blocked = rules.packages - packageName
             // Resolve the complete set first. Missing rules must never silently become bypasses.
             val installed = blocked.filter { name ->
                 try { @Suppress("DEPRECATION") packageManager.getApplicationInfo(name, 0); true }
                 catch (_: android.content.pm.PackageManager.NameNotFoundException) { false }
             }.toSet()
-            val quarantine = installed.isEmpty() || installed != blocked
+            val plan = CapturePlan.resolve(rules, installed, packageName)
             // A unique local IPv6 address ties asynchronous callbacks to this exact session.
             val ipv6 = InetAddress.getByAddress(ByteArray(16).also {
                 ADDRESS_RANDOM.nextBytes(it)
@@ -136,12 +166,14 @@ class FirewallService : VpnService() {
                 .addDnsServer("192.0.2.1").setBlocking(true)
             // No application list means capture every app: safe startup for Always-on,
             // empty rules, or an uninstalled rule target. No forwarding or bypass API.
-            if (!quarantine) installed.forEach { builder.addAllowedApplication(it) }
+            if (!plan.captureAll) plan.packages.forEach { builder.addAllowedApplication(it) }
             // Android replaces the old interface only after successful establishment.
             // Never close our old descriptor before this call succeeds.
             val descriptor = builder.establish() ?: error("VPN permission is unavailable")
-            val readyMessage = if (quarantine) "Safety mode: ALL apps routed to the sink. Verify Lockdown."
+            val modeMessage = if (plan.quarantine) "Safety mode: ALL apps routed to the sink. Verify Lockdown."
+                else if (plan.captureAll) "All-app blocking active; every app is routed to the sink."
                 else "Android routing confirmed for ${installed.size} selected apps; verify Lockdown."
+            val readyMessage = modeMessage + if (observingPackages) "" else " Package monitoring unavailable; manually reapply after package changes."
             val next = Session(descriptor, ipv6, readyMessage)
             synchronized(lock) {
                 if (attempt != generation) {
@@ -152,8 +184,8 @@ class FirewallService : VpnService() {
                 session = next
                 previous?.let { close(it) }
                 FirewallStatus.mutable.value = protection(FirewallState(
-                    starting = true, monitoring = true, quarantine = quarantine,
-                    appliedPackages = if (quarantine) emptySet() else installed,
+                    starting = true, monitoring = true, quarantine = plan.quarantine, running = true,
+                    appliedPackages = plan.packages, appliedMode = rules.mode,
                     message = if (observing) "VPN interface created; waiting for Android routing confirmation."
                         else "Cannot observe Android routing; interface retained. Verify Lockdown."
                 ))
@@ -169,9 +201,9 @@ class FirewallService : VpnService() {
         } catch (_: Exception) {
             synchronized(lock) {
                 val old = FirewallStatus.mutable.value
-                FirewallStatus.mutable.value = protection(old.copy(message = if (session != null)
+                FirewallStatus.mutable.value = protection(old.copy(retryRequired = true, message = if (session != null)
                     "Rule update failed; previous rules remain. New selections are NOT confirmed blocked."
-                    else "Cannot establish VPN. Only Android Lockdown can prevent network bypass."))
+                    else "Cannot establish VPN. Retry or stop the service. Only Android Lockdown prevents bypass."))
             }
             // Keep foreground service and any previous tunnel; Android can retry Always-on.
         }
@@ -237,7 +269,7 @@ class FirewallService : VpnService() {
 
     private fun monitoringStopped(owner: Session) = synchronized(lock) {
         if (session === owner && owner.running.get()) {
-            FirewallStatus.mutable.value = FirewallStatus.mutable.value.copy(monitoring = false,
+            FirewallStatus.mutable.value = FirewallStatus.mutable.value.copy(monitoring = false, retryRequired = true,
                 message = "VPN interface retained; packet monitoring unavailable. Verify Android Lockdown.")
         }
     }
@@ -258,6 +290,8 @@ class FirewallService : VpnService() {
         super.onRevoke()
     }
     override fun onDestroy() {
+        if (observingPackages) runCatching { unregisterReceiver(packageChanges) }
+        observingPackages = false
         if (observing) runCatching { getSystemService(ConnectivityManager::class.java).unregisterNetworkCallback(callback) }
         observing = false
         shutdown("VPN service stopped. Only Android Lockdown can prevent network bypass.")

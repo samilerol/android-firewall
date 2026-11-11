@@ -19,10 +19,10 @@ class DeviceSmokeTest {
         assertFalse(context.cacheDir.listFiles().orEmpty().any { it.name.startsWith("analysis-") })
     }
     @Test fun firewallRulesPersistLocally() {
-        val before = Rules.blocked(context)
+        val before = Rules.load(context)
         try {
-            Rules.save(context, setOf("org.example.blocked"))
-            assertEquals(setOf("org.example.blocked"), Rules.blocked(context))
-        } finally { Rules.save(context, before) }
+            Rules.save(context, setOf("org.example.blocked"), FirewallMode.BLOCK_ALL)
+            assertEquals(FirewallRules(setOf("org.example.blocked"), FirewallMode.BLOCK_ALL), Rules.load(context))
+        } finally { Rules.save(context, before.packages, before.mode) }
     }
 }
