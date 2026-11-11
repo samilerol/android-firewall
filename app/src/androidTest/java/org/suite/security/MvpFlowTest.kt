@@ -1,5 +1,6 @@
 package org.suite.security
 
+import android.graphics.Rect
 import android.app.NotificationManager
 import android.content.Intent
 import android.net.Uri
@@ -75,9 +76,18 @@ class MvpFlowTest {
     private fun click(value: String) {
         var found: AccessibilityNodeInfo? = null
         await("Missing UI text: $value") { found = text(value); found != null }
-        var node = requireNotNull(found)
+        val label = requireNotNull(found)
+        var node = label
         while (!node.isClickable && node.parent != null) node = node.parent
-        assertTrue("Cannot click $value", node.performAction(AccessibilityNodeInfo.ACTION_CLICK))
+        assertTrue("Disabled control: $value", node.isEnabled && label.isEnabled)
+        if (label.packageName?.toString() != context.packageName || !node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
+            // DocumentsUI uses touch-driven selection; its file row may reject ACTION_CLICK.
+            // Tap the observed label, then let the test verify the real resulting screen/URI.
+            val bounds = Rect().also { label.getBoundsInScreen(it) }
+            assertFalse("Empty tap target: $value", bounds.isEmpty)
+            instrumentation.sendStatus(2, Bundle().apply { putString("uiTouch", "$value ${bounds.toShortString()}") })
+            shell("input tap ${bounds.centerX()} ${bounds.centerY()}")
+        }
     }
     private fun scrollTo(value: String, backwards: Boolean = false) {
         repeat(30) {
@@ -313,13 +323,19 @@ class MvpFlowTest {
             if (picker.resolveActivity(context.packageManager) == null) {
                 await("Missing picker was not explained") { text("Cannot open document picker. Enable a document provider and retry.") != null }
             } else {
-                await("Picker not ready") { text("firewall-fixture.apk") != null || nodes().any { node -> node.contentDescription?.toString()?.let { value -> value.contains("roots", true) || value.contains("drawer", true) } == true } }
-                if (text("firewall-fixture.apk") == null) {
-                    val menu = nodes().first { node -> node.contentDescription?.toString()?.let { value -> value.contains("roots", true) || value.contains("drawer", true) } == true }
-                    assertTrue(menu.performAction(AccessibilityNodeInfo.ACTION_CLICK))
-                    click("Downloads")
+                var menu: AccessibilityNodeInfo? = null
+                await("Picker navigation not ready") {
+                    menu = nodes().firstOrNull { node -> node.contentDescription?.toString()?.let { value -> value.contains("roots", true) || value.contains("drawer", true) } == true && node.isVisibleToUser }
+                    menu != null
                 }
-                click("firewall-fixture.apk")
+                assertTrue(requireNotNull(menu).performAction(AccessibilityNodeInfo.ACTION_CLICK))
+                click("Downloads")
+                await("Downloads fixture missing") { text("firewall-fixture.apk") != null }
+                var fileRow = requireNotNull(text("firewall-fixture.apk"))
+                while (!fileRow.isFocusable && fileRow.parent != null) fileRow = fileRow.parent
+                assertTrue("Native file row cannot receive keyboard focus", fileRow.performAction(AccessibilityNodeInfo.ACTION_FOCUS))
+                instrumentation.sendStatus(2, Bundle().apply { putString("uiFileActivation", "Downloads file row focused; native Enter") })
+                shell("input keyevent KEYCODE_ENTER")
                 await("Picker URI was not analyzed") { nodes().any { node -> node.text?.toString()?.let { value -> value.contains(probe) && value.contains("SHA-256") } == true } }
                 assertFalse(context.cacheDir.listFiles().orEmpty().any { file -> file.name.startsWith("analysis-") })
             }
